@@ -29,13 +29,17 @@ int ChatMessage::from_bin(char * bobj)
     //Reconstruir la clase usando el buffer _data
     char* tmp = _data;
 
-    memcpy(&type, tmp,sizeof(int8_t));
-    tmp += sizeof(int8_t);
-    nick.resize(sizeof(char) * 8);
+    memcpy(&type, tmp,sizeof(uint8_t));
+    tmp += sizeof(uint8_t);
+    nick.resize(8);
     memcpy(&nick[0], tmp, sizeof(char) * 8);
     tmp += sizeof(char) * 8;
-    message.resize(sizeof(char) * 80);
+    message.resize(80);
+    //message = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
     memcpy(&message[0], tmp, sizeof(char) * 80);
+
+    std::cout<<message<<std::endl;
+
     return 0;
 }
 
@@ -53,7 +57,6 @@ void ChatServer::do_messages()
 
         if (isMessage != -1)
         {
-            std::cout<<"something";
             switch(msg.type)
             {
                 case ChatMessage::LOGIN:
@@ -103,10 +106,12 @@ void ChatServer::do_messages()
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 
-
+/*
 ChatClient::ChatClient(const char * s, const char * p, const char * n):socket(s, p),
         nick(n)
-        {socket.printsd(); };
+        {socket.printsd(); 
+        std::cout << "socket memory address: " << &socket << std::endl;};
+*/
 
 void ChatClient::login()
 {
@@ -166,7 +171,17 @@ void ChatClient::net_thread()
             std::cout<<"same nick\n";
 
         if(isMessage != -1 && em.nick != nick)
-            std::cout << "<" << em.nick << ">: " << em.message << std::endl;
+            std::cout << "<" << em.nick << ">: " << printMessage(em.message) << std::endl;
     }
+}
+
+std::string ChatClient::printMessage(std::string message)
+{
+    std::string msg = "";
+    int c = 0;
+    while (message[c] != '\0')
+        msg += message[0];
+    std::cout << "Message length: " << c;
+    return msg;
 }
 

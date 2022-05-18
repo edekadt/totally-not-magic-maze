@@ -12,21 +12,23 @@ Socket::Socket(const char * address, const char * port):sd(-1)
 
     memset((void*)&hints, 0, sizeof(hints));
 
-    hints.ai_family = AF_INET;
+    hints.ai_family   = AF_INET;
     hints.ai_socktype = SOCK_DGRAM;
 
     int rc = getaddrinfo(address, port, &hints, &res);
 
     if (rc != 0)
     {
-        std::cout << "Error getaddrinfo" << std::endl;
+        std::cout << "Error getaddrinfo" << gai_strerror(rc) << std::endl;
+        exit(-1);
     }
 
-    int sd = socket(res->ai_family, res->ai_socktype, 0);
-    std::cout<< "Socket created: "<<sd<<"\n";
+    sd = socket(res->ai_family, res->ai_socktype, 0);
+    
     if (sd < 0)
     {
-        std::cout << "Error socket" << std::endl;
+        std::cout << "socket: " << strerror(errno) << std::endl;
+        exit(-1);
     }
 
     sa = *res->ai_addr;
@@ -51,7 +53,7 @@ int Socket::recv(Serializable &obj, Socket * &sock)
     }
     std::cout << "message received\n";
 
-    if ( sock != 0 )
+    if ( sock == 0 )
     {
         std::cout<<"Creando socket\n";
         sock = new Socket(&sa, sa_len);

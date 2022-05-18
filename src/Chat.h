@@ -97,7 +97,7 @@ public:
      * @param p puerto del servidor
      * @param n nick del usuario
      */
-    ChatClient(const char * s, const char * p, const char * n);
+    ChatClient(const char * s, const char * p, const char * n):nick(n),socket(s,p){};
 
     /**
      *  Envía el mensaje de login al servidor
@@ -124,13 +124,15 @@ public:
 private:
 
     /**
+     * Nick del usuario
+     */
+    std::string nick;
+
+    /**
      * Socket para comunicar con el servidor
      */
     Socket socket;
 
-    /**
-     * Nick del usuario
-     */
-    std::string nick;
+    std::string printMessage(std::string message);
 };
 

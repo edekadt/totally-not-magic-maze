@@ -6,15 +6,15 @@ OBJ = Socket.o Chat.o
 LIBS=-lpthread
 
 %.o: %.cc $(DEPS)
-	$(CC) -g -c -o $@ $< $(CFLAGS)
+	$(CC) -Wall -g -c -o $@ $< $(CFLAGS)
 
 all: cs cc
 Chat.o: Chat.cc
-	g++ -c Chat.cc $(CXXFLAGS)
+	g++ -Wall -c -g Chat.cc $(CXXFLAGS)
 ChatServer.o: ChatServer.cc
-	g++ -c ChatServer.cc $(CXXFLAGS)
+	g++ -Wall -c -g ChatServer.cc $(CXXFLAGS)
 ChatClient.o: ChatClient.cc
-	g++ -c ChatClient.cc $(CXXFLAGS)
+	g++ -Wall -c -g ChatClient.cc $(CXXFLAGS)
 
 cs: $(OBJ) ChatServer.o
 	g++ -o $@ $^ $(CFLAGS) $(LIBS)
