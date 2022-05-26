@@ -1,0 +1,38 @@
+{
+
+  "fonts" : [
+    { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
+    { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 }
+  ],
+  
+  "images" : [
+    { "id" : "fighter", "file" : "resources/images/fighter.png" },
+    { "id" : "fire", "file" : "resources/images/fire.png" },
+    { "id" : "heart", "file" : "resources/images/heart.png" },
+    { "id" : "asteroid", "file" : "resources/images/asteroid.png" },
+    { "id" : "asteroidGold", "file" : "resources/images/asteroid_gold.png" }
+  ],
+  
+  "messages" : [
+    { "id" : "start", "text" : "Press space to start", "font" : "ARIAL24", "color" : "0x441155ff"},
+    { "id" : "continue", "text" : "Press space to continue", "font" : "ARIAL24", "color" : "0x112233ff", "bg" : "0xffffffff" },
+    { "id" : "gameoverL", "text" : "Game Over: You Lost", "font" : "ARIAL24", "color" : "0x0000ffff" },
+    { "id" : "gameoverW", "text" : "Game Over: You Won!", "font" : "ARIAL24", "color" : "0x0000ffff" }
+  ],
+
+  "sounds": [
+    {
+      "id": "fire",
+      "file": "resources/sound/fire.wav"
+    },
+    {
+      "id": "explosion",
+      "file": "resources/sound/explosion.wav"
+    },
+    {
+      "id": "thrust",
+      "file": "resources/sound/thrust.wav"
+    }
+  ]
+
+}
