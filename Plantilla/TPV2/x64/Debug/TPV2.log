@@ -1,7 +1,0 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Msbuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: El directorio Output no termina con una barra diagonal final. Esta instancia de compilación agregará la barra diagonal porque es necesaria para que se pueda evaluar correctamente el directorio Output.
-  Game.cpp
-  CollisionsSystem.cpp
-  FighterSystem.cpp
-  Generando código...
-C:\Users\evasa\OneDrive\Documentos\Universidad\Redes\totally-not-magic-maze\Plantilla\TPV2\src\systems\FighterSystem.cpp(134): warning C4717: 'FighterSystem::dontMove': recursiva para todas las rutas de acceso de control; la función provocará el desbordamiento de la pila en tiempo de ejecución
-  TPV2.vcxproj -> C:\Users\evasa\OneDrive\Documentos\Universidad\Redes\totally-not-magic-maze\Plantilla\bin\TPV2Debug.exe
