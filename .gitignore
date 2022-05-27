@@ -429,3 +429,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Plantilla/TPV2/x64/Debug/TPV2Debug.exe.recipe
+*.log
+*.log
