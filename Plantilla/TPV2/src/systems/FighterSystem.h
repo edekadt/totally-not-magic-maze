@@ -23,7 +23,7 @@ public:
 
 	__SYSID_DECL__(ecs::_sys_FIGHTERSYSTEM);
 
-	FighterSystem():cazaTransform_(nullptr) {}
+	FighterSystem() {}
 	~FighterSystem() {}
 
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
@@ -37,12 +37,9 @@ public:
 	// del caza y moverlo como en la práctica 1 (acelerar, desacelerar, etc).
 	void update() override;
 
-private:
+	int getMov() { return movimientos; }
 
-	// Para reaccionar al mensaje de que ha habido un choque entre el fighter y un
-	// un asteroide. Poner el caza en el centro con velocidad (0,0) y rotación 0. No
-	// hace falta desactivar la entidad (no dibujarla si el juego está parado).
-	void onCollision_FighterAsteroid();
+private:
 
 	// Para gestionar el mensaje de que ha acabado una ronda. Desactivar el sistema.
 	void onRoundOver();
@@ -50,20 +47,16 @@ private:
 	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
 	void onRoundStart();
 
-	void fighterMiddle(); 
+	void move(float value, bool izqDer); 
+	void dontMove(float value, bool izqDer);
 
 	// Indica si el sistema está activo o no (modificar el valor en onRoundOver y
 	// onRoundStart, y en update no hacer nada si no está activo)
 	bool active_;
 
-	Transform* cazaTransform_;
 	Texture* t; 
 	Message m;
 
-	const float speedLimit = 3.0f;
-	const float thrust = 0.2f;
-	Vector2D newVel;
-
-	float timeToFire = 250.0f, previousShot;
+	int movimientos; 
 };
 

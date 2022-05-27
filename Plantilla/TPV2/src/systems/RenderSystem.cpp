@@ -7,26 +7,52 @@ void RenderSystem::update()
 	}
 	drawMSG();
 	drawLife();
+	drawBase();
+	drawBlock(); 
 }
 
 void RenderSystem::drawFighter()
 {
-	auto caza = mngr_->getHandler(ecs::_hdlr_CAZA);
 
-	auto cazaTr_ = mngr_->getComponent<Transform>(caza);
-	assert(cazaTr_ != nullptr);
-	auto t = &sdlutils().images().at("fighter");
-
-	SDL_Rect dest = build_sdlrect(cazaTr_->pos_, cazaTr_->width_, cazaTr_->height_);
-	t->render(dest, cazaTr_->rot_);
+	for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
+	{
+		if (mngr_->isAlive(e)) {
+			auto cazaTr = mngr_->getComponent<Transform>(e);
+			assert(cazaTr != nullptr);
+			auto t = &sdlutils().images().at("fighter");
+			SDL_Rect dest = build_sdlrect(cazaTr->pos_, cazaTr->width_, cazaTr->height_);
+			t->render(dest, cazaTr->rot_);
+		}
+	}
 }
+
+void RenderSystem::drawBase()
+{
+	auto baseTr = mngr_->getComponent<Transform>(mngr_->getHandler(ecs::_hdlr_BASE)); 
+	assert(baseTr != nullptr);
+	auto t = &sdlutils().images().at("ball");
+	SDL_Rect dest = build_sdlrect(baseTr->pos_, baseTr->width_, baseTr->height_);
+	t->render(dest, 0);
+}
+
+void RenderSystem::drawBlock()
+{
+	for (auto e : mngr_->getEntities(ecs::_grp_BLOCKS))
+	{
+		auto blockTr = mngr_->getComponent<Transform>(e); 
+		auto t = &sdlutils().images().at("fire");
+		SDL_Rect dest = build_sdlrect(blockTr->pos_, blockTr->width_, blockTr->height_);
+		t->render(dest, 0);
+	}
+}
+
 
 void RenderSystem::drawLife()
 {
 	auto life_ = mngr_->getHandler(ecs::_hdlr_CAZA);
 	assert(life_ != nullptr);
 
-	auto vidas = 3; 
+	auto vidas = 2; 
 
 	auto t = &sdlutils().images().at("heart");
 
@@ -37,7 +63,7 @@ void RenderSystem::drawLife()
 		SDL_Rect dest = build_sdlrect(cont + 10.0f, 15.0f, 30.0f, 30.0f);
 		t->render(dest, 0);
 
-		cont += 35.0f; 
+		cont += 50.0f; 
 	}
 }
 

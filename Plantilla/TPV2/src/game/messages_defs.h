@@ -14,10 +14,7 @@ enum msgId : msgId_type {
 	_m_NEW_GAME, //
 	_m_ROUND_OVER, //
 	_m_ROUND_START, //
-	_m_SHOOT, //
-	_m_CRASH_CAZA, //
-	_m_NO_ASTEROIDS, // Este es el mensaje de que el jugador ha destruido todos los asteroides que lo recibira GameCtrlSystem y ese sistema es el que acabara la partida
-	_m_CRASH_ASTEROIDS // Este es el mensaje de que una bala ha destruido un asteroide
+	_m_BASE
 };
 
 
@@ -25,18 +22,5 @@ struct Message {
 	msgId_type id;
 
 	union {
-		struct {
-			Vector2D* pos;
-			Vector2D* speed;
-			double width;
-			double height;
-			float rot;
-		} bullet;
-
-		// _m_CRASH_ASTEROIDS
-		struct {
-			ecs::Entity *e; //Esta es la entidad del asteroide que ha chocado con la bala
-			ecs::Entity* bull; //Esta es la entidad de la bala que se envia para que se destruya
-		} crash_asteroids;
 	};
 };

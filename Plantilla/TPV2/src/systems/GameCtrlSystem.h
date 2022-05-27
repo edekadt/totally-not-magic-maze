@@ -43,11 +43,6 @@ private:
 	void roundOver();
 	void gameOver();
 
-	// Para gestionar el mensaje que ha habido un choque entre el fighter y un asteroide.
-	// Tiene que avisar que ha acabado la ronda, quitar una vida al fighter, y si no hay más vidas
-	// avisar que ha acabado el juego (y quien es el ganador).
-	void onCollision_FighterAsteroid();
-
 
 	bool winner; //es true si el ganador es el jugador, false si el ganador son los asteroides
 	State state_;

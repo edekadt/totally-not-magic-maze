@@ -31,7 +31,9 @@ public:
 	void receive(const Message&) override;
 	CollisionsSystem();
 	virtual ~CollisionsSystem();
-	void initSystem() override;
+
+	void initSystem(); 
+
 	void update() override;
 
 private:
@@ -39,5 +41,10 @@ private:
 	bool active_;
 
 	Message m; 
+
+	Transform* baseTr; 
+
+	const int maxPlayers = 2; 
+	int players = maxPlayers;
 };
 

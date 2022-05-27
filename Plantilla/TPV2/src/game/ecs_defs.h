@@ -8,27 +8,21 @@
 #define _CMPS_LIST_ \
 	_TRANSFORM, \
 	_IMAGE, \
-	_FIGHTERCTRL, \
-	_STOPONBORDER, \
-    _TOROIDE, \
-    _DEACC, \
-    _HEALTH, \
-    _GUN, \
-	_FRAMEDIMAGE, \
-	_GENERATIONS, \
-	_ASTEROIDTYPE
+	_FIGHTERCTRL
 
 // Groups list - must have at least one element
 //
 #define _GRPS_LIST_ \
-	_grp_ASTEROIDS, \
-    _grp_BULLETS, \
-    _grp_LIVES
+    _grp_FIGHTERS, \
+    _grp_BLOCKS
 
 // Handlers list - must have at least one element
 //
 #define _HDLRS_LIST_ \
-	_hdlr_CAZA
+	_hdlr_CAZA, \
+    _hdlr_CAZA1, \
+    _hdlr_BASE
+
 
 // Systems list - must have at least one element
 //
@@ -36,7 +30,5 @@
 	_sys_RENDERSYSTEM, \
     _sys_COLLISIONSYSTEM, \
     _sys_FIGHTERSYSTEM, \
-    _sys_BULLETSYSTEM, \
-    _sys_ASTEROIDSYSTEM, \
     _sys_GAMECTRLSYSTEM
 

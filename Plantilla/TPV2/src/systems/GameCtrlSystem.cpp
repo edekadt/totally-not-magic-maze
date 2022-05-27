@@ -3,6 +3,7 @@
 #include "GameCtrlSystem.h"
 
 #include "../ecs/Manager.h"
+
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/SDLUtils.h"
 
@@ -38,9 +39,6 @@ void GameCtrlSystem::update() {
 
 void GameCtrlSystem::receive(const Message &m) {
 	switch (m.id) {
-	case _m_CRASH_CAZA:
-		onCollision_FighterAsteroid(); 
-		break;
 	default:
 		break;
 	}
@@ -76,6 +74,3 @@ void GameCtrlSystem::gameOver() {
 	mngr_->send(m);
 }
 
-void GameCtrlSystem::onCollision_FighterAsteroid() {
-		roundOver();
-}

@@ -39,6 +39,8 @@ private:
 	void drawFighter(); 
 	void drawLife(); 
 	void drawMSG();  
+	void drawBase(); 
+	void drawBlock(); 
 
 	//Este booleano es para indicar si se dibuja el caza, los asteroides y las balas cuando esta activo
 	bool active_; 

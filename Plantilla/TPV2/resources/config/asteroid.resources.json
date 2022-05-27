@@ -4,13 +4,36 @@
     { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
     { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 }
   ],
-  
-  "images" : [
-    { "id" : "fighter", "file" : "resources/images/fighter.png" },
-    { "id" : "fire", "file" : "resources/images/fire.png" },
-    { "id" : "heart", "file" : "resources/images/heart.png" },
-    { "id" : "asteroid", "file" : "resources/images/asteroid.png" },
-    { "id" : "asteroidGold", "file" : "resources/images/asteroid_gold.png" }
+
+  "images": [
+    {
+      "id": "fighter",
+      "file": "resources/images/fighter.png"
+    },
+    {
+      "id": "fighter2",
+      "file": "resources/images/fighter2.png"
+    },
+    {
+      "id": "ball",
+      "file": "resources/images/tennis_ball.png"
+    },
+    {
+      "id": "fire",
+      "file": "resources/images/fire.png"
+    },
+    {
+      "id": "heart",
+      "file": "resources/images/heart.png"
+    },
+    {
+      "id": "asteroid",
+      "file": "resources/images/asteroid.png"
+    },
+    {
+      "id": "asteroidGold",
+      "file": "resources/images/asteroid_gold.png"
+    }
   ],
   
   "messages" : [
