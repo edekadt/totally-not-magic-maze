@@ -8,31 +8,27 @@
   "images": [
     {
       "id": "fighter",
-      "file": "resources/images/fighter.png"
+      "file": "resources/images/JugAzul.png"
     },
     {
       "id": "fighter2",
-      "file": "resources/images/fighter2.png"
+      "file": "resources/images/JugVerde.png"
     },
     {
-      "id": "ball",
-      "file": "resources/images/tennis_ball.png"
+      "id": "salidaAzul",
+      "file": "resources/images/salidaAzul1.png"
+    },
+    {
+      "id": "salidaVerde",
+      "file": "resources/images/salidaVerde1.png"
     },
     {
       "id": "fire",
-      "file": "resources/images/fire.png"
+      "file": "resources/images/bloque.png"
     },
     {
       "id": "heart",
       "file": "resources/images/heart.png"
-    },
-    {
-      "id": "asteroid",
-      "file": "resources/images/asteroid.png"
-    },
-    {
-      "id": "asteroidGold",
-      "file": "resources/images/asteroid_gold.png"
     }
   ],
   
