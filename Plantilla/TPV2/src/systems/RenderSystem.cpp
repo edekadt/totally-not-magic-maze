@@ -1,4 +1,6 @@
- #include "RenderSystem.h"
+#include "RenderSystem.h"
+#include "CollisionsSystem.h"
+#include <map>
 
 void RenderSystem::update()
 {	 
@@ -8,7 +10,7 @@ void RenderSystem::update()
 	drawMSG();
 	drawLife();
 	drawBase();
-	drawBlock(); 
+	drawMap(); 
 }
 
 void RenderSystem::drawFighter()
@@ -21,7 +23,7 @@ void RenderSystem::drawFighter()
 			auto cazaTr = mngr_->getComponent<Transform>(e);
 			assert(cazaTr != nullptr);
 
-			SDL_Rect dest = build_sdlrect(cazaTr->pos_, cazaTr->width_, cazaTr->height_);
+			SDL_Rect dest = build_sdlrect(cazaTr->pos_.getX() * 50, cazaTr->pos_.getY() * 50.0, cazaTr->width_, cazaTr->height_);
 
 			if (cont == 0)
 			{
@@ -49,7 +51,7 @@ void RenderSystem::drawBase()
 		auto baseTr = mngr_->getComponent<Transform>(e);
 		assert(baseTr != nullptr);
 
-		SDL_Rect dest = build_sdlrect(baseTr->pos_, baseTr->width_, baseTr->height_);
+		SDL_Rect dest = build_sdlrect(baseTr->pos_.getX() * 50.0, baseTr->pos_.getY() * 50.0, baseTr->width_, baseTr->height_);
 
 		if (cont == 0)
 		{
@@ -67,14 +69,28 @@ void RenderSystem::drawBase()
 	}
 }
 
-void RenderSystem::drawBlock()
+void RenderSystem::drawMap()
 {
-	for (auto e : mngr_->getEntities(ecs::_grp_BLOCKS))
+	//for (auto e : mngr_->getEntities(ecs::_grp_BLOCKS))
+	//{
+	//	auto blockTr = mngr_->getComponent<Transform>(e); 
+	//	auto t = &sdlutils().images().at("fire");
+	//	SDL_Rect dest = build_sdlrect(blockTr->pos_.getX() * 50.0, blockTr->pos_.getY() * 50.0, blockTr->width_, blockTr->height_);
+	//	t->render(dest, 0);
+	//}
+	auto grid = mngr_->getSystem<CollisionsSystem>()->getGrid();
+	for (int i = 0; i < (*grid).size(); ++i)
 	{
-		auto blockTr = mngr_->getComponent<Transform>(e); 
-		auto t = &sdlutils().images().at("fire");
-		SDL_Rect dest = build_sdlrect(blockTr->pos_, blockTr->width_, blockTr->height_);
-		t->render(dest, 0);
+		for (int j = 0; j < (*grid)[i].size(); ++j)
+		{
+			std::string sprite = mapSprites[((*grid)[i][j])];
+			if (sprite != "")
+			{
+				auto t = &sdlutils().images().at(sprite);
+				SDL_Rect dest = build_sdlrect(i * 50.0, j * 50.0, 50.0, 50.0);
+				t->render(dest, 0);
+			}
+		}
 	}
 }
 
@@ -148,4 +164,11 @@ void RenderSystem::receive(const Message& msg)
 	default:
 		break;
 	}
+}
+
+void RenderSystem::initSystem()
+{
+	mapSprites.emplace(GameMap::Cells::Empty, "");		// Vac�o
+	mapSprites.emplace(GameMap::Cells::Wall, "fire");	// Paredes
+	mapSprites.emplace(GameMap::Cells::Exit, "ball");	// Salidas
 }

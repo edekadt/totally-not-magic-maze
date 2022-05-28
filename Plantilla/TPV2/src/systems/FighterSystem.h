@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <map>
 
 #include "../ecs/System.h"
 #include "../ecs/Entity.h"
@@ -39,7 +40,13 @@ public:
 
 	int getMov() { return movimientos; }
 
+	ecs::Entity* getFighterExit(ecs::Entity* fighter);
+
 private:
+
+	// Asocia cada fighter con su salida
+	std::map<ecs::Entity*, ecs::Entity*> exits;
+	void addFighterExit(ecs::Entity* fighter, ecs::Entity* exit);
 
 	// Para gestionar el mensaje de que ha acabado una ronda. Desactivar el sistema.
 	void onRoundOver();
@@ -47,8 +54,11 @@ private:
 	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
 	void onRoundStart();
 
-	void move(float value, bool izqDer); 
-	void dontMove(float value, bool izqDer);
+	void move(int x, int y);
+
+	// Comprueba si hay una pared o un caza delante en la dirección que se quiere mover.
+	// Devuelve false si no se puede realizar el movimiento
+	bool checkMove(Transform* tr, int x, int y);
 
 	// Indica si el sistema está activo o no (modificar el valor en onRoundOver y
 	// onRoundStart, y en update no hacer nada si no está activo)

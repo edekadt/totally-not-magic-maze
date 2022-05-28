@@ -22,8 +22,8 @@
 #define _HDLRS_LIST_ \
 	_hdlr_CAZA, \
     _hdlr_CAZA1, \
-    _hdlr_BASE1, \
-    _hdlr_BASE2
+    _hdlr_EXIT1, \
+    _hdlr_EXIT2
 
 
 // Systems list - must have at least one element
