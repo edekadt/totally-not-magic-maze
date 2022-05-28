@@ -15,7 +15,6 @@ void RenderSystem::update()
 
 void RenderSystem::drawFighter()
 {
-	int cont = 0; 
 
 	for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
 	{
@@ -25,27 +24,23 @@ void RenderSystem::drawFighter()
 
 			SDL_Rect dest = build_sdlrect(cazaTr->pos_.getX() * 50, cazaTr->pos_.getY() * 50.0, cazaTr->width_, cazaTr->height_);
 
-			if (cont == 0)
+			if (e == mngr_->getHandler(ecs::_hdlr_CAZA))
 			{
 				auto t = &sdlutils().images().at("fighter");
 				t->render(dest, cazaTr->rot_);
 			}
 
-			else if (cont == 1)
+			else if (e == mngr_->getHandler(ecs::_hdlr_CAZA1))
 			{
 				auto t = &sdlutils().images().at("fighter2");
 				t->render(dest, cazaTr->rot_);
 			}
-
-			cont++; 
 		}
 	}
 }
 
 void RenderSystem::drawBase()
 {
-	int cont = 0; 
-
 	for (auto e : mngr_->getEntities(ecs::_grp_EXITS))
 	{
 		auto baseTr = mngr_->getComponent<Transform>(e);
@@ -53,19 +48,17 @@ void RenderSystem::drawBase()
 
 		SDL_Rect dest = build_sdlrect(baseTr->pos_.getX() * 50.0, baseTr->pos_.getY() * 50.0, baseTr->width_, baseTr->height_);
 
-		if (cont == 0)
+		if (e == mngr_->getHandler(ecs::_hdlr_EXIT1))
 		{
 			auto t = &sdlutils().images().at("salidaAzul");
 			t->render(dest, 0);
 		}
 
-		else if (cont == 1)
+		else if (e == mngr_->getHandler(ecs::_hdlr_EXIT2))
 		{
 			auto t = &sdlutils().images().at("salidaVerde");
 			t->render(dest, 0);
 		}
-
-		cont++; 
 	}
 }
 
