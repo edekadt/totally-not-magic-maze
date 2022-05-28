@@ -4,13 +4,13 @@
 
 void RenderSystem::update()
 {	 
-	drawMSG();
 	drawBase();
 	drawMap(); 
 	drawLife();
 	if (active_) {
 		drawFighter();
 	}
+	drawMSG();
 }
 
 void RenderSystem::drawFighter()
