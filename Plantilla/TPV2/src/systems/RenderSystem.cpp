@@ -15,28 +15,57 @@ void RenderSystem::update()
 
 void RenderSystem::drawFighter()
 {
+	int cont = 0; 
 
 	for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
 	{
 		if (mngr_->isAlive(e)) {
 			auto cazaTr = mngr_->getComponent<Transform>(e);
 			assert(cazaTr != nullptr);
-			auto t = &sdlutils().images().at("fighter");
+
 			SDL_Rect dest = build_sdlrect(cazaTr->pos_.getX() * 50, cazaTr->pos_.getY() * 50.0, cazaTr->width_, cazaTr->height_);
-			t->render(dest, cazaTr->rot_);
+
+			if (cont == 0)
+			{
+				auto t = &sdlutils().images().at("fighter");
+				t->render(dest, cazaTr->rot_);
+			}
+
+			else if (cont == 1)
+			{
+				auto t = &sdlutils().images().at("fighter2");
+				t->render(dest, cazaTr->rot_);
+			}
+
+			cont++; 
 		}
 	}
 }
 
 void RenderSystem::drawBase()
 {
+	int cont = 0; 
+
 	for (auto e : mngr_->getEntities(ecs::_grp_EXITS))
 	{
 		auto baseTr = mngr_->getComponent<Transform>(e);
 		assert(baseTr != nullptr);
-		auto t = &sdlutils().images().at("ball");
+
 		SDL_Rect dest = build_sdlrect(baseTr->pos_.getX() * 50.0, baseTr->pos_.getY() * 50.0, baseTr->width_, baseTr->height_);
-		t->render(dest, 0);
+
+		if (cont == 0)
+		{
+			auto t = &sdlutils().images().at("salidaAzul");
+			t->render(dest, 0);
+		}
+
+		else if (cont == 1)
+		{
+			auto t = &sdlutils().images().at("salidaVerde");
+			t->render(dest, 0);
+		}
+
+		cont++; 
 	}
 }
 
@@ -139,7 +168,7 @@ void RenderSystem::receive(const Message& msg)
 
 void RenderSystem::initSystem()
 {
-	mapSprites.emplace(GameMap::Cells::Empty, "");		// Vacío
+	mapSprites.emplace(GameMap::Cells::Empty, "");		// Vacï¿½o
 	mapSprites.emplace(GameMap::Cells::Wall, "fire");	// Paredes
 	mapSprites.emplace(GameMap::Cells::Exit, "ball");	// Salidas
 }
