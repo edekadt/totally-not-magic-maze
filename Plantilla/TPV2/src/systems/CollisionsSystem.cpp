@@ -2,6 +2,7 @@
 
 #include "CollisionsSystem.h"
 #include "RenderSystem.h"
+#include "FighterSystem.h"
 
 CollisionsSystem::CollisionsSystem() : active_(false) {
 }
@@ -10,6 +11,7 @@ CollisionsSystem::~CollisionsSystem() {
 }
 
 void CollisionsSystem::initSystem() {
+	initializeMap(16, 12);
 	generateExits();
 	generateWalls();
 }
@@ -18,11 +20,11 @@ void CollisionsSystem::update() {
 	auto& fighters = mngr_->getEntities(ecs::_grp_FIGHTERS);
 
 	for (ecs::Entity* e : fighters) {
-		auto eTR = mngr_->getComponent<Transform>(e);
-
-		if (Collisions::collides(eTR->pos_, eTR->width_, eTR->height_, 
-			baseTr->pos_, baseTr->width_, baseTr->height_)) {
-
+		auto tr = mngr_->getComponent<Transform>(e);
+		auto exitPos = mngr_->getComponent<Transform>(mngr_->getSystem<FighterSystem>()->getFighterExit(e))->pos_;
+		if ((int)tr->pos_.getX() == (int)exitPos.getX() && (int)tr->pos_.getY() == (int)exitPos.getY())
+		{
+			std::cout << "Exit";
 			mngr_->setAlive(e, false); 
 			players--; 
 
@@ -42,10 +44,10 @@ void CollisionsSystem::addExit(int exitID, int x, int y)
 	switch (exitID)
 	{
 	case 1:
-		exitHdlr = ecs::_hdlr_BASE1;
+		exitHdlr = ecs::_hdlr_EXIT1;
 		break;
 	case 2:
-		exitHdlr = ecs::_hdlr_BASE2;
+		exitHdlr = ecs::_hdlr_EXIT2;
 		break;
 	default:
 		throw new std::exception("Handler no reconocido");
@@ -53,7 +55,7 @@ void CollisionsSystem::addExit(int exitID, int x, int y)
 
 	auto* base = mngr_->addEntity(ecs::_grp_EXITS);
 	baseTr = mngr_->addComponent<Transform>(base);
-	baseTr->init(Vector2D(x * 50.0f, y * 50.0f), Vector2D(), 50.0f, 50.0f, 0.0f);
+	baseTr->init(Vector2D(x, y), Vector2D(), 50.0f, 50.0f, 0.0f);
 	mngr_->setHandler(exitHdlr, base);
 }
 
@@ -114,10 +116,22 @@ void CollisionsSystem::addVrtWall(int x, int startY, int endY)
 
 void CollisionsSystem::addBlock(int x, int y)
 {
-	auto* block = mngr_->addEntity(ecs::_grp_BLOCKS);
-	auto transform = mngr_->addComponent<Transform>(block);
-	transform->init(Vector2D(x * 50.0f, y * 50.0), Vector2D(), 50.0f, 50.0f, 0.0f);
+	//auto* block = mngr_->addEntity(ecs::_grp_BLOCKS);
+	//auto transform = mngr_->addComponent<Transform>(block);
+	//transform->init(Vector2D(x, y), Vector2D(), 50.0f, 50.0f, 0.0f);
 
+	(*grid)[x][y] = GameMap::Cells::Wall;
+}
+
+void CollisionsSystem::initializeMap(int mapX, int mapY)
+{
+	grid = new GameMap::Grid(mapY);
+	for (int i = 0; i < mapX; ++i)
+	{
+		grid->push_back(std::vector<GameMap::Cells>());
+		for (int j = 0; j < mapY; ++j)
+			(*grid)[i].push_back(GameMap::Cells::Empty);
+	}
 }
 
 void CollisionsSystem::receive(const Message &m) {

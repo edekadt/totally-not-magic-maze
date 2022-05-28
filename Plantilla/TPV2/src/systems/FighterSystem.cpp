@@ -1,19 +1,22 @@
 #include "FighterSystem.h"
 #include "../sdlutils/InputHandler.h"
+#include "CollisionsSystem.h"
 
 void FighterSystem::initSystem() 
 {
 	auto* caza = mngr_->addEntity(ecs::_grp_FIGHTERS);
 	auto cazaTransform_ = mngr_->addComponent<Transform>(caza); 
-	cazaTransform_->init(Vector2D(6 * 50.0, 4 * 50.0),
+	cazaTransform_->init(Vector2D(6, 4),
 		Vector2D(), 50.0f, 50.0f, 0.0f);
 	mngr_->setHandler(ecs::_hdlr_CAZA, caza);
+	addFighterExit(caza, mngr_->getHandler(ecs::_hdlr_EXIT1));
 
 	auto* caza2 = mngr_->addEntity(ecs::_grp_FIGHTERS);
 	auto cazaTransform1_ = mngr_->addComponent<Transform>(caza2);
-	cazaTransform1_->init(Vector2D(9 * 50.0, 7 * 50.0),
+	cazaTransform1_->init(Vector2D(9, 7),
 		Vector2D(), 50.0f, 50.0f, 0.0f);
 	mngr_->setHandler(ecs::_hdlr_CAZA1, caza2);
+	addFighterExit(caza2, mngr_->getHandler(ecs::_hdlr_EXIT2));
 }
 
 void FighterSystem::update() 
@@ -28,25 +31,30 @@ void FighterSystem::update()
 		{
 			if (ihldr.isKeyDown(SDL_SCANCODE_RIGHT))
 			{
-				move(50.0f / 2, true);
+				move(1, 0);
 			}
 				
 			else if (ihldr.isKeyDown(SDL_SCANCODE_LEFT))
 			{
-				move(-50.0f / 2, true);
+				move(-1, 0);
 			}
 				
 			else if (ihldr.isKeyDown(SDL_SCANCODE_UP))
 			{
-				move(-50.0f / 2, false);
+				move(0, -1);
 			}
 				
 			else if (ihldr.isKeyDown(SDL_SCANCODE_DOWN))
 			{
-				move(50.0f / 2, false);
+				move(0, 1);
 			}			
 		}
 	}
+}
+
+ecs::Entity* FighterSystem::getFighterExit(ecs::Entity* fighter)
+{
+	return exits[fighter];
 }
 
 void FighterSystem::receive(const Message& msg) 
@@ -66,6 +74,11 @@ void FighterSystem::receive(const Message& msg)
 	}
 }
 
+void FighterSystem::addFighterExit(ecs::Entity* fighter, ecs::Entity* exit)
+{
+	exits.emplace(fighter, exit);
+}
+
 void FighterSystem::onRoundOver()
 {
 	active_ = false; 
@@ -76,62 +89,36 @@ void FighterSystem::onRoundStart()
 	active_ = true; 
 }
 
-void FighterSystem::move(float value, bool izqDer)
-{
-	if (izqDer)
-	{
-		for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
-		{
-			auto playerTr = mngr_->getComponent<Transform>(e); 
-			playerTr->pos_.setX(playerTr->pos_.getX() + value);
-		}
-	}
-
-	else
-	{
-		for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
-		{
-			auto playerTr = mngr_->getComponent<Transform>(e);
-			playerTr->pos_.setY(playerTr->pos_.getY() + value);
-		}
-	}
-
-	dontMove(value, izqDer);
-	movimientos++;
-}
-
-void FighterSystem::dontMove(float value, bool izqDer)
+void FighterSystem::move(int x, int y)
 {
 	for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
 	{
-		auto playerTr = mngr_->getComponent<Transform>(e);
-
-		for (auto b : mngr_->getEntities(ecs::_grp_BLOCKS))
+		auto playerTr = mngr_->getComponent<Transform>(e); 
+		if (checkMove(playerTr, x, y))
 		{
-			auto blockTr = mngr_->getComponent<Transform>(b);
-
-			if (Collisions::collides(playerTr->pos_, playerTr->width_, playerTr->height_,
-				blockTr->pos_, blockTr->width_, blockTr->height_))
-			{
-				if (izqDer)
-					playerTr->pos_.setX(playerTr->pos_.getX() - value);
-				else
-					playerTr->pos_.setY(playerTr->pos_.getY() - value); 
-			}
+			playerTr->pos_.setX(playerTr->pos_.getX() + x);
+			playerTr->pos_.setY(playerTr->pos_.getY() + y);
 		}
+	}
 
-		for (auto p : mngr_->getEntities(ecs::_grp_FIGHTERS))
-		{
-			auto otherPlayerTr = mngr_->getComponent<Transform>(p);
+	movimientos++;
+}
 
-			if (p != e && Collisions::collides(playerTr->pos_, playerTr->width_, playerTr->height_,
-				otherPlayerTr->pos_, otherPlayerTr->width_, otherPlayerTr->height_))
-			{
-				if (izqDer)
-					playerTr->pos_.setX(playerTr->pos_.getX() - value);
-				else
-					playerTr->pos_.setY(playerTr->pos_.getY() - value);
-			}
-		}
-	} 
+bool FighterSystem::checkMove(Transform* tr, int x, int y)
+{
+	// Si hay una pared delante, no movemos
+	auto grid = mngr_->getSystem<CollisionsSystem>()->getGrid();
+	GameMap::Cells cell = (*grid)[(int)(tr->pos_.getX() + x)][(int)(tr->pos_.getY() + y)];
+	if (cell == GameMap::Cells::Wall)
+		return false;
+
+	// Comprobamos que ninguno de los otros personajes está delante
+	for (auto f : mngr_->getEntities(ecs::_grp_FIGHTERS))
+	{
+		auto otherTr = mngr_->getComponent<Transform>(f);
+
+		if (otherTr != tr && otherTr->pos_.getX() == tr->pos_.getX() + x && otherTr->pos_.getY() == tr->pos_.getY() + y)
+			return false;
+	}
+	return true;
 }

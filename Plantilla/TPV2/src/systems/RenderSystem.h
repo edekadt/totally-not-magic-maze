@@ -16,6 +16,8 @@
 #include "../sdlutils/InputHandler.h"
 
 #include "GameCtrlSystem.h"
+#include "CollisionsSystem.h"
+
 
 class RenderSystem : public ecs::System {
 public:
@@ -26,7 +28,7 @@ public:
 	void receive(const Message& m) override;
 
 	// Inicializar el sistema, etc.
-	void initSystem() override {}
+	void initSystem() override;
 
 	// - Dibujar asteroides, balas y caza (sólo si el juego no está parado).
 	// - Dibujar las vidas (siempre).
@@ -40,10 +42,12 @@ private:
 	void drawLife(); 
 	void drawMSG();  
 	void drawBase(); 
-	void drawBlock(); 
+	void drawMap(); 
 
 	//Este booleano es para indicar si se dibuja el caza, los asteroides y las balas cuando esta activo
 	bool active_; 
+
+	std::map<GameMap::Cells, std::string> mapSprites;
 
 };
 

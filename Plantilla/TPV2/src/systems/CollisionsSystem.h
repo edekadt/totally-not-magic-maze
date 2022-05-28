@@ -19,10 +19,17 @@
 #include "../sdlutils/InputHandler.h"
 
 #include "GameCtrlSystem.h"
+namespace GameMap
+{
+	enum class Cells { Empty, Wall, Exit };
+	using Grid = std::vector<std::vector<Cells>>;
+}
 
 struct Transform;
 
 class CollisionsSystem: public ecs::System {
+
+	void initializeMap(int mapX, int mapY);
 
 public:
 
@@ -35,8 +42,11 @@ public:
 	void initSystem(); 
 
 	void update() override;
+	
+	GameMap::Grid* getGrid() { return grid; };
 
 private:
+	GameMap::Grid* grid;
 
 	bool active_;
 
