@@ -5,25 +5,15 @@ void FighterSystem::initSystem()
 {
 	auto* caza = mngr_->addEntity(ecs::_grp_FIGHTERS);
 	auto cazaTransform_ = mngr_->addComponent<Transform>(caza); 
-	cazaTransform_->init(Vector2D(sdlutils().width() / 2.0f, sdlutils().height() / 2.0f),
+	cazaTransform_->init(Vector2D(6 * 50.0, 4 * 50.0),
 		Vector2D(), 50.0f, 50.0f, 0.0f);
 	mngr_->setHandler(ecs::_hdlr_CAZA, caza);
 
 	auto* caza2 = mngr_->addEntity(ecs::_grp_FIGHTERS);
 	auto cazaTransform1_ = mngr_->addComponent<Transform>(caza2);
-	cazaTransform1_->init(Vector2D(sdlutils().width() / 2.0f + 200.0f, sdlutils().height() / 2.0f),
+	cazaTransform1_->init(Vector2D(9 * 50.0, 7 * 50.0),
 		Vector2D(), 50.0f, 50.0f, 0.0f);
 	mngr_->setHandler(ecs::_hdlr_CAZA1, caza2);
-
-	float contador = 0.0f; 
-
-	for (int i = 0; i < 10; i++)
-	{
-		auto* bloque = mngr_->addEntity(ecs::_grp_BLOCKS); 
-		auto blockTransform = mngr_->addComponent<Transform>(bloque); 
-		blockTransform->init(Vector2D(50.0f, contador), Vector2D(), 50.0f, 50.0f, 0.0f); 
-		contador += 50.0f; 
-	}
 }
 
 void FighterSystem::update() 

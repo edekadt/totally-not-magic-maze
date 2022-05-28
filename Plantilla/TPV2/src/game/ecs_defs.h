@@ -14,6 +14,7 @@
 //
 #define _GRPS_LIST_ \
     _grp_FIGHTERS, \
+    _grp_EXITS, \
     _grp_BLOCKS
 
 // Handlers list - must have at least one element
@@ -21,7 +22,8 @@
 #define _HDLRS_LIST_ \
 	_hdlr_CAZA, \
     _hdlr_CAZA1, \
-    _hdlr_BASE
+    _hdlr_BASE1, \
+    _hdlr_BASE2
 
 
 // Systems list - must have at least one element

@@ -28,11 +28,14 @@ void RenderSystem::drawFighter()
 
 void RenderSystem::drawBase()
 {
-	auto baseTr = mngr_->getComponent<Transform>(mngr_->getHandler(ecs::_hdlr_BASE)); 
-	assert(baseTr != nullptr);
-	auto t = &sdlutils().images().at("ball");
-	SDL_Rect dest = build_sdlrect(baseTr->pos_, baseTr->width_, baseTr->height_);
-	t->render(dest, 0);
+	for (auto e : mngr_->getEntities(ecs::_grp_EXITS))
+	{
+		auto baseTr = mngr_->getComponent<Transform>(e);
+		assert(baseTr != nullptr);
+		auto t = &sdlutils().images().at("ball");
+		SDL_Rect dest = build_sdlrect(baseTr->pos_, baseTr->width_, baseTr->height_);
+		t->render(dest, 0);
+	}
 }
 
 void RenderSystem::drawBlock()
