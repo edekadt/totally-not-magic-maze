@@ -51,7 +51,6 @@ void FighterSystem::update()
 				move(-50.0f / 2, false);
 			}
 				
-
 			else if (ihldr.isKeyDown(SDL_SCANCODE_DOWN))
 			{
 				move(50.0f / 2, false);
@@ -106,6 +105,9 @@ void FighterSystem::move(float value, bool izqDer)
 			playerTr->pos_.setY(playerTr->pos_.getY() + value);
 		}
 	}
+
+	dontMove(value, izqDer);
+	movimientos++;
 }
 
 void FighterSystem::dontMove(float value, bool izqDer)
@@ -127,8 +129,19 @@ void FighterSystem::dontMove(float value, bool izqDer)
 					playerTr->pos_.setY(playerTr->pos_.getY() - value); 
 			}
 		}
-	}
 
-	dontMove(value, izqDer); 
-	movimientos++; 
+		for (auto p : mngr_->getEntities(ecs::_grp_FIGHTERS))
+		{
+			auto otherPlayerTr = mngr_->getComponent<Transform>(p);
+
+			if (p != e && Collisions::collides(playerTr->pos_, playerTr->width_, playerTr->height_,
+				otherPlayerTr->pos_, otherPlayerTr->width_, otherPlayerTr->height_))
+			{
+				if (izqDer)
+					playerTr->pos_.setX(playerTr->pos_.getX() - value);
+				else
+					playerTr->pos_.setY(playerTr->pos_.getY() - value);
+			}
+		}
+	} 
 }

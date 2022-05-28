@@ -1,6 +1,7 @@
 // This file is part of the course TPV2@UCM - Samir Genaim
 
 #include "GameCtrlSystem.h"
+#include "FighterSystem.h"
 
 #include "../ecs/Manager.h"
 
@@ -72,5 +73,10 @@ void GameCtrlSystem::gameOver() {
 	mngr_->send(m);
 	m.id = _m_GAME_OVER;
 	mngr_->send(m);
+}
+
+bool GameCtrlSystem::canStillPlay()
+{
+	return mngr_->getSystem<FighterSystem>()->getMov() < maxMov;
 }
 

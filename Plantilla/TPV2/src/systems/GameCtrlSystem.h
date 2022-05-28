@@ -43,8 +43,12 @@ private:
 	void roundOver();
 	void gameOver();
 
+	bool canStillPlay(); 
+
 
 	bool winner; //es true si el ganador es el jugador, false si el ganador son los asteroides
 	State state_;
+
+	const int maxMov = 40; 
 };
 
