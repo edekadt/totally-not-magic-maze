@@ -88,14 +88,18 @@ void FighterSystem::addFighter(int fighterID, int x, int y)
 
 void FighterSystem::addFighterExits()
 {
-	if (numFighters >= 1)
-		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA0), mngr_->getHandler(ecs::_hdlr_EXIT0));
-	if (numFighters >= 2)
-		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA1), mngr_->getHandler(ecs::_hdlr_EXIT1));
-	if (numFighters >= 3)
-		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA2), mngr_->getHandler(ecs::_hdlr_EXIT2));
-	if (numFighters == 4)
+	switch (numFighters)
+	{
+	case 4:
 		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA3), mngr_->getHandler(ecs::_hdlr_EXIT3));
+	case 3:
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA2), mngr_->getHandler(ecs::_hdlr_EXIT2));
+	case 2:
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA1), mngr_->getHandler(ecs::_hdlr_EXIT1));
+	case 1:
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA0), mngr_->getHandler(ecs::_hdlr_EXIT0));
+		break;
+	}
 }
 
 void FighterSystem::onRoundOver()

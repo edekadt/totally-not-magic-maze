@@ -60,11 +60,6 @@ private:
 	int players = maxPlayers;
 
 	void addExit(int exitID, int x, int y);
-
-	void generateWalls();
-	void generateExits();
-	void addHrzWall(int startX, int endX, int y);
-	void addVrtWall(int x, int startY, int endY);
 	void addBlock(int x, int y);
 
 	void load(std::string filename, int mapX, int mapY);
