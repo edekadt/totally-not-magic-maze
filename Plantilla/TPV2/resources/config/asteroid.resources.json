@@ -15,12 +15,28 @@
       "file": "resources/images/JugVerde.png"
     },
     {
+      "id": "fighter3",
+      "file": "resources/images/JugRojo.png"
+    },
+    {
+      "id": "fighter4",
+      "file": "resources/images/JugAmarillo.png"
+    },
+    {
       "id": "salidaAzul",
       "file": "resources/images/salidaAzul1.png"
     },
     {
       "id": "salidaVerde",
       "file": "resources/images/salidaVerde1.png"
+    },
+    {
+      "id": "salidaRoja",
+      "file": "resources/images/salidaRoja1.png"
+    },
+    {
+      "id": "salidaAmarilla",
+      "file": "resources/images/salidaAmarilla.png"
     },
     {
       "id": "fire",
