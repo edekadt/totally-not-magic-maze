@@ -4,8 +4,6 @@
 
 void FighterSystem::initSystem() 
 {
-	addFighter(0, 6, 4);
-	addFighter(1, 9, 7);
 	addFighterExits();
 }
 

@@ -3,6 +3,7 @@
 #include "CollisionsSystem.h"
 #include "RenderSystem.h"
 #include "FighterSystem.h"
+#include <random>
 
 CollisionsSystem::CollisionsSystem() : active_(false) {
 }
@@ -59,6 +60,8 @@ void CollisionsSystem::addExit(int exitID, int x, int y)
 	default:
 		throw new std::exception("Handler no reconocido");
 	}
+
+	(*grid)[x][y] = GameMap::Cells::Exit;
 
 	auto* base = mngr_->addEntity(ecs::_grp_EXITS);
 	baseTr = mngr_->addComponent<Transform>(base);
@@ -160,25 +163,21 @@ void CollisionsSystem::receive(const Message& m) {
 		std::fstream src(filename);
 		std::string text;
 
-		int exit = 1;
 
-		for (int i = 0; i < mapX; i++)
+		for (int j = 0; j < mapY; j++)
 		{
 			std::getline(src, text);
 			int aux = 0;
 
-			for (int j = 0; j < mapY; j++)
+			for (int i = 0; i < mapX; i++)
 			{
 				if (text[aux] == '-')
 					(*grid)[i][j] = GameMap::Cells::Wall;
 				else if (text[aux] >= '0' && text[aux] <= '3')
-					//(*grid)[i][j] = GameMap::Cells::Fighter;
 					mngr_->getSystem<FighterSystem>()->addFighter(text[aux] - '0', i, j);
-				else if (text[aux] == 'A')
+				else if (text[aux] >= 'A' && text[aux] <= 'D')
 				{
-					addExit(exit, i, j);
-					(*grid)[i][j] = GameMap::Cells::Exit;
-					exit++;
+					addExit(text[aux] - 'A', i, j);
 				}
 				else
 					(*grid)[i][j] = GameMap::Cells::Empty;
@@ -193,8 +192,15 @@ void CollisionsSystem::receive(const Message& m) {
 
 	void CollisionsSystem::selectorLevel()
 	{
+		srand(static_cast<long unsigned int>(time(0)));
 		int level = rand() % 2;
-		std::string filename = "resources/config/level1.txt";
+		std::string filename;
+		for (int i = 0; i < 100; i++)
+		{
+			std::cout << (level = rand() % 2);
+			filename = "resources/config/level" + std::to_string(level) + ".txt";
+			std::cout << filename << std::endl;
+		}
 		load(filename, 14, 14);
 	}
 

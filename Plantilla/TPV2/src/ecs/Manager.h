@@ -201,7 +201,6 @@ public:
 		//
 		System *s = new T(std::forward<Ts>(args)...);
 		s->setContext(this);
-		s->initSystem();
 		sys_[sId] = s;
 
 		// return it to the user so it can be initialised if needed

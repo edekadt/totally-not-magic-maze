@@ -159,5 +159,5 @@ void RenderSystem::initSystem()
 {
 	mapSprites.emplace(GameMap::Cells::Empty, "floor");	// Vac�o
 	mapSprites.emplace(GameMap::Cells::Wall, "wall");	// Paredes
-	mapSprites.emplace(GameMap::Cells::Exit, "ball");	// Salidas
+	mapSprites.emplace(GameMap::Cells::Exit, "");	// Salidas
 }

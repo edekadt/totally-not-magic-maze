@@ -39,12 +39,16 @@ void Game::init() {
 	mngr_ = new Manager();
 
 	gameCtrlSys_ = mngr_->addSystem<GameCtrlSystem>();
-	fighterSys_ = mngr_->addSystem<FighterSystem>();
 	collisionsSys_ = mngr_->addSystem<CollisionsSystem>();
+	fighterSys_ = mngr_->addSystem<FighterSystem>();
 	renderSys_ = mngr_->addSystem<RenderSystem>();
 }
 
 void Game::start() {
+	mngr_->getSystem<GameCtrlSystem>()->initSystem();
+	mngr_->getSystem<CollisionsSystem>()->initSystem();
+	mngr_->getSystem<FighterSystem>()->initSystem();
+	mngr_->getSystem<RenderSystem>()->initSystem();
 
 	// a boolean to exit the loop
 	bool exit = false;
