@@ -43,11 +43,17 @@ void CollisionsSystem::addExit(int exitID, int x, int y)
 	ecs::hdlrId exitHdlr;
 	switch (exitID)
 	{
+	case 0:
+		exitHdlr = ecs::_hdlr_EXIT0;
+		break;
 	case 1:
 		exitHdlr = ecs::_hdlr_EXIT1;
 		break;
 	case 2:
 		exitHdlr = ecs::_hdlr_EXIT2;
+		break;
+	case 3:
+		exitHdlr = ecs::_hdlr_EXIT3;
 		break;
 	default:
 		throw new std::exception("Handler no reconocido");
@@ -98,8 +104,8 @@ void CollisionsSystem::generateWalls()
 
 void CollisionsSystem::generateExits()
 {
-	addExit(1, 4, 1);
-	addExit(2, 13, 10);
+	addExit(0, 4, 1);
+	addExit(1, 13, 10);
 }
 
 void CollisionsSystem::addHrzWall(int startX, int endX, int y)

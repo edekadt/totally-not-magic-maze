@@ -4,9 +4,8 @@
 
 void RenderSystem::update()
 {	 
-	drawBase();
 	drawMap(); 
-	drawLife();
+	drawBase();
 	if (active_) {
 		drawFighter();
 	}
@@ -24,15 +23,24 @@ void RenderSystem::drawFighter()
 
 			SDL_Rect dest = build_sdlrect(cazaTr->pos_.getX() * 50, cazaTr->pos_.getY() * 50.0, cazaTr->width_, cazaTr->height_);
 
-			if (e == mngr_->getHandler(ecs::_hdlr_CAZA))
+			if (e == mngr_->getHandler(ecs::_hdlr_CAZA0))
 			{
-				auto t = &sdlutils().images().at("fighter");
+				auto t = &sdlutils().images().at("fighterB");
 				t->render(dest, cazaTr->rot_);
 			}
-
 			else if (e == mngr_->getHandler(ecs::_hdlr_CAZA1))
 			{
-				auto t = &sdlutils().images().at("fighter2");
+				auto t = &sdlutils().images().at("fighterR");
+				t->render(dest, cazaTr->rot_);
+			}
+			else if (e == mngr_->getHandler(ecs::_hdlr_CAZA2))
+			{
+				auto t = &sdlutils().images().at("fighterG");
+				t->render(dest, cazaTr->rot_);
+			}
+			else if (e == mngr_->getHandler(ecs::_hdlr_CAZA3))
+			{
+				auto t = &sdlutils().images().at("fighterY");
 				t->render(dest, cazaTr->rot_);
 			}
 		}
@@ -48,15 +56,24 @@ void RenderSystem::drawBase()
 
 		SDL_Rect dest = build_sdlrect(baseTr->pos_.getX() * 50.0, baseTr->pos_.getY() * 50.0, baseTr->width_, baseTr->height_);
 
-		if (e == mngr_->getHandler(ecs::_hdlr_EXIT1))
+		if (e == mngr_->getHandler(ecs::_hdlr_EXIT0))
 		{
-			auto t = &sdlutils().images().at("salidaAzul");
+			auto t = &sdlutils().images().at("exitB");
 			t->render(dest, 0);
 		}
-
+		else if (e == mngr_->getHandler(ecs::_hdlr_EXIT1))
+		{
+			auto t = &sdlutils().images().at("exitR");
+			t->render(dest, 0);
+		}
 		else if (e == mngr_->getHandler(ecs::_hdlr_EXIT2))
 		{
-			auto t = &sdlutils().images().at("salidaVerde");
+			auto t = &sdlutils().images().at("exitG");
+			t->render(dest, 0);
+		}
+		else if (e == mngr_->getHandler(ecs::_hdlr_EXIT3))
+		{
+			auto t = &sdlutils().images().at("exitY");
 			t->render(dest, 0);
 		}
 	}
@@ -84,27 +101,6 @@ void RenderSystem::drawMap()
 				t->render(dest, 0);
 			}
 		}
-	}
-}
-
-
-void RenderSystem::drawLife()
-{
-	auto life_ = mngr_->getHandler(ecs::_hdlr_CAZA);
-	assert(life_ != nullptr);
-
-	auto vidas = 2; 
-
-	auto t = &sdlutils().images().at("heart");
-
-	int cont = 0;
-
-	for (int i = 0; i < vidas; i++)
-	{
-		SDL_Rect dest = build_sdlrect(cont + 10.0f, 15.0f, 30.0f, 30.0f);
-		t->render(dest, 0);
-
-		cont += 50.0f; 
 	}
 }
 
@@ -161,7 +157,7 @@ void RenderSystem::receive(const Message& msg)
 
 void RenderSystem::initSystem()
 {
-	mapSprites.emplace(GameMap::Cells::Empty, "");		// Vac�o
-	mapSprites.emplace(GameMap::Cells::Wall, "fire");	// Paredes
+	mapSprites.emplace(GameMap::Cells::Empty, "floor");	// Vac�o
+	mapSprites.emplace(GameMap::Cells::Wall, "wall");	// Paredes
 	mapSprites.emplace(GameMap::Cells::Exit, "ball");	// Salidas
 }

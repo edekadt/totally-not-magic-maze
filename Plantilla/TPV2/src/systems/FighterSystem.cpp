@@ -4,19 +4,9 @@
 
 void FighterSystem::initSystem() 
 {
-	auto* caza = mngr_->addEntity(ecs::_grp_FIGHTERS);
-	auto cazaTransform_ = mngr_->addComponent<Transform>(caza); 
-	cazaTransform_->init(Vector2D(6, 4),
-		Vector2D(), 50.0f, 50.0f, 0.0f);
-	mngr_->setHandler(ecs::_hdlr_CAZA, caza);
-	addFighterExit(caza, mngr_->getHandler(ecs::_hdlr_EXIT1));
-
-	auto* caza2 = mngr_->addEntity(ecs::_grp_FIGHTERS);
-	auto cazaTransform1_ = mngr_->addComponent<Transform>(caza2);
-	cazaTransform1_->init(Vector2D(9, 7),
-		Vector2D(), 50.0f, 50.0f, 0.0f);
-	mngr_->setHandler(ecs::_hdlr_CAZA1, caza2);
-	addFighterExit(caza2, mngr_->getHandler(ecs::_hdlr_EXIT2));
+	addFighter(0, 6, 4);
+	addFighter(1, 9, 7);
+	addFighterExits();
 }
 
 void FighterSystem::update() 
@@ -74,9 +64,40 @@ void FighterSystem::receive(const Message& msg)
 	}
 }
 
-void FighterSystem::addFighterExit(ecs::Entity* fighter, ecs::Entity* exit)
+void FighterSystem::addFighter(int fighterID, int x, int y)
 {
-	exits.emplace(fighter, exit);
+	++numFighters;
+	auto* fighter = mngr_->addEntity(ecs::_grp_FIGHTERS);
+	auto fighterTransform = mngr_->addComponent<Transform>(fighter);
+	fighterTransform->init(Vector2D(x, y), Vector2D(), 50.0f, 50.0f, 0.0f);
+	switch (fighterID)
+	{
+	case 0:
+		mngr_->setHandler(ecs::_hdlr_CAZA0, fighter);
+		break;
+	case 1:
+		mngr_->setHandler(ecs::_hdlr_CAZA1, fighter);
+		break;
+	case 2:
+		mngr_->setHandler(ecs::_hdlr_CAZA2, fighter);
+		break;
+	case 3:
+		mngr_->setHandler(ecs::_hdlr_CAZA3, fighter);
+		break;
+	}
+	
+}
+
+void FighterSystem::addFighterExits()
+{
+	if (numFighters >= 1)
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA0), mngr_->getHandler(ecs::_hdlr_EXIT0));
+	if (numFighters >= 2)
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA1), mngr_->getHandler(ecs::_hdlr_EXIT1));
+	if (numFighters >= 3)
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA2), mngr_->getHandler(ecs::_hdlr_EXIT2));
+	if (numFighters == 4)
+		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA3), mngr_->getHandler(ecs::_hdlr_EXIT3));
 }
 
 void FighterSystem::onRoundOver()

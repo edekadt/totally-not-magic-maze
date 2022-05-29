@@ -7,39 +7,43 @@
 
   "images": [
     {
-      "id": "fighter",
+      "id": "fighterB",
       "file": "resources/images/JugAzul.png"
     },
     {
-      "id": "fighter2",
+      "id": "fighterG",
       "file": "resources/images/JugVerde.png"
     },
     {
-      "id": "fighter3",
+      "id": "fighterR",
       "file": "resources/images/JugRojo.png"
     },
     {
-      "id": "fighter4",
+      "id": "fighterY",
       "file": "resources/images/JugAmarillo.png"
     },
     {
-      "id": "salidaAzul",
+      "id": "exitB",
       "file": "resources/images/salidaAzul1.png"
     },
     {
-      "id": "salidaVerde",
+      "id": "exitG",
       "file": "resources/images/salidaVerde1.png"
     },
     {
-      "id": "salidaRoja",
+      "id": "exitR",
       "file": "resources/images/salidaRoja1.png"
     },
     {
-      "id": "salidaAmarilla",
+      "id": "exitY",
       "file": "resources/images/salidaAmarilla.png"
     },
     {
-      "id": "fire",
+      "id": "floor",
+      "file": "resources/images/fondo.png"
+    },
+    {
+      "id": "wall",
       "file": "resources/images/bloque.png"
     },
     {

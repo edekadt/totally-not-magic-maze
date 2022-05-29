@@ -20,10 +20,14 @@
 // Handlers list - must have at least one element
 //
 #define _HDLRS_LIST_ \
-	_hdlr_CAZA, \
-    _hdlr_CAZA1, \
+	_hdlr_CAZA0, \
+	_hdlr_CAZA1, \
+    _hdlr_CAZA2, \
+    _hdlr_CAZA3, \
+    _hdlr_EXIT0, \
     _hdlr_EXIT1, \
-    _hdlr_EXIT2
+    _hdlr_EXIT2, \
+    _hdlr_EXIT3
 
 
 // Systems list - must have at least one element

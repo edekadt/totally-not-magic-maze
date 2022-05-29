@@ -39,7 +39,6 @@ public:
 private:
 	//Metodos para renderizar todas las entidades del juego
 	void drawFighter(); 
-	void drawLife(); 
 	void drawMSG();  
 	void drawBase(); 
 	void drawMap(); 
