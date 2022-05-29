@@ -66,9 +66,8 @@ private:
 	bool active_;
 
 	Texture* t; 
-	Message m;
 	int numFighters = 0;
 
-	int movimientos; 
+	int movimientos = 0; 
 };
 

@@ -4,6 +4,7 @@
 
 #include <array>
 #include <cstdint>
+#include <fstream>
 
 #include "../ecs/System.h"
 #include "../ecs/Manager.h"
@@ -19,9 +20,10 @@
 #include "../sdlutils/InputHandler.h"
 
 #include "GameCtrlSystem.h"
+#include <string>
 namespace GameMap
 {
-	enum class Cells { Empty, Wall, Exit };
+	enum class Cells { Empty, Wall, Exit};
 	using Grid = std::vector<std::vector<Cells>>;
 }
 
@@ -64,5 +66,8 @@ private:
 	void addHrzWall(int startX, int endX, int y);
 	void addVrtWall(int x, int startY, int endY);
 	void addBlock(int x, int y);
+
+	void load(std::string filename, int mapX, int mapY);
+	void selectorLevel();
 };
 

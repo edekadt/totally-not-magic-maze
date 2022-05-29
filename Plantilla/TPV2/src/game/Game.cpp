@@ -18,9 +18,9 @@ using ecs::Manager;
 
 Game::Game() :
 		mngr_(nullptr), //
+	    fighterSys_(nullptr), //
 		gameCtrlSys_(nullptr), //
 		collisionsSys_(nullptr), //
-	    fighterSys_(nullptr), //
 		renderSys_(nullptr) {}
 
 Game::~Game() {
@@ -39,9 +39,9 @@ void Game::init() {
 	mngr_ = new Manager();
 
 	gameCtrlSys_ = mngr_->addSystem<GameCtrlSystem>();
+	fighterSys_ = mngr_->addSystem<FighterSystem>();
 	collisionsSys_ = mngr_->addSystem<CollisionsSystem>();
 	renderSys_ = mngr_->addSystem<RenderSystem>();
-	fighterSys_ = mngr_->addSystem<FighterSystem>();
 }
 
 void Game::start() {

@@ -11,9 +11,10 @@ CollisionsSystem::~CollisionsSystem() {
 }
 
 void CollisionsSystem::initSystem() {
-	initializeMap(16, 12);
-	generateExits();
-	generateWalls();
+	initializeMap(14, 14);
+	selectorLevel(); 
+	//generateExits();
+	//generateWalls();
 }
 
 void CollisionsSystem::update() {
@@ -140,7 +141,7 @@ void CollisionsSystem::initializeMap(int mapX, int mapY)
 	}
 }
 
-void CollisionsSystem::receive(const Message &m) {
+void CollisionsSystem::receive(const Message& m) {
 	switch (m.id) {
 	case _m_ROUND_START:
 		active_ = true;
@@ -152,3 +153,48 @@ void CollisionsSystem::receive(const Message &m) {
 		break;
 	}
 }
+
+
+	void CollisionsSystem::load(std::string filename, int mapX, int mapY)
+	{
+		std::fstream src(filename);
+		std::string text;
+
+		int exit = 1;
+
+		for (int i = 0; i < mapX; i++)
+		{
+			std::getline(src, text);
+			int aux = 0;
+
+			for (int j = 0; j < mapY; j++)
+			{
+				if (text[aux] == '-')
+					(*grid)[i][j] = GameMap::Cells::Wall;
+				else if (text[aux] >= '0' && text[aux] <= '3')
+					//(*grid)[i][j] = GameMap::Cells::Fighter;
+					mngr_->getSystem<FighterSystem>()->addFighter(text[aux] - '0', i, j);
+				else if (text[aux] == 'A')
+				{
+					addExit(exit, i, j);
+					(*grid)[i][j] = GameMap::Cells::Exit;
+					exit++;
+				}
+				else
+					(*grid)[i][j] = GameMap::Cells::Empty;
+					
+
+				aux++;
+			}
+		}
+
+		std::cout << "load";
+	}
+
+	void CollisionsSystem::selectorLevel()
+	{
+		int level = rand() % 2;
+		std::string filename = "resources/config/level1.txt";
+		load(filename, 14, 14);
+	}
+
