@@ -12,7 +12,6 @@ CollisionsSystem::~CollisionsSystem() {
 }
 
 void CollisionsSystem::initSystem() {
-	initializeMap(14, 14);
 	selectorLevel(); 
 }
 
@@ -98,28 +97,41 @@ void CollisionsSystem::receive(const Message& m) {
 
 void CollisionsSystem::load(std::string filename, int mapX, int mapY)
 {
+	initializeMap(mapX, mapY);
+	// 0 = vacío
+	// 1 = pared
+	// 2-5 = salidas
+	// 6-9 = personajes
+
 	std::fstream src(filename);
 	std::string text;
 
 	for (int j = 0; j < mapY; j++)
 	{
 		std::getline(src, text);
-		int aux = 0;
-
 		for (int i = 0; i < mapX; i++)
 		{
-			if (text[aux] == '-')
-				addBlock(i, j);
-			else if (text[aux] >= '0' && text[aux] <= '3')
-				mngr_->getSystem<FighterSystem>()->addFighter(text[aux] - '0', i, j);
-			else if (text[aux] >= 'A' && text[aux] <= 'D')
+			switch (text[i])
 			{
-				addExit(text[aux] - 'A', i, j);
-			}
-			else
+			case '0':
 				(*grid)[i][j] = GameMap::Cells::Empty;
-
-			aux++;
+				break;
+			case'1':
+				addBlock(i, j);
+				break;
+			case'2':
+			case'3':
+			case'4':
+			case'5':
+				addExit(text[i] - '2', i, j);
+				break;
+			case'6':
+			case'7':
+			case'8':
+			case'9':
+				mngr_->getSystem<FighterSystem>()->addFighter(text[i] - '6', i, j);
+				break;
+			}
 		}
 	}
 }
@@ -128,7 +140,7 @@ void CollisionsSystem::selectorLevel()
 {
 	srand(static_cast<long unsigned int>(time(0)));
 	int level = rand() % 2;
-	std::string filename = "resources/config/level" + std::to_string(level) + ".txt";
-	load(filename, 14, 14);
+	std::string filename = "resources/config/level" + std::to_string(1) + ".txt";
+	load(filename, 12, 12);
 }
 

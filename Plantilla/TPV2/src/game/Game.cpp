@@ -30,7 +30,7 @@ Game::~Game() {
 void Game::init() {
 
 	// Initialize the SDLUtils singleton
-	SDLUtils::init("Asteroids", 800, 600,
+	SDLUtils::init("Magic Maze", 600, 600,
 			"resources/config/asteroid.resources.json");
 
 	sdlutils().hideCursor();
@@ -81,5 +81,4 @@ void Game::start() {
 		if (frameTime < 10)
 			SDL_Delay(10 - frameTime);
 	}
-
 }
