@@ -145,10 +145,12 @@ void CollisionsSystem::selectorLevel()
 	load(filename, 12, 12);
 }
 
-void CollisionsSystem::generateLevel(int numHeroes, int mapX, int mapY)
+void CollisionsSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
 {
+	mapX = mapX_;
+	mapY = mapY_;
 	initializeMap(mapX, mapY);
-	//srand(static_cast<long unsigned int>(time(0)));
+	srand(static_cast<long unsigned int>(time(0)));
 	// 0 = vacío
 	// 1 = pared
 	// 2-5 = salidas
@@ -174,10 +176,10 @@ void CollisionsSystem::generateLevel(int numHeroes, int mapX, int mapY)
 	}
 
 	// Choose an exit cell, then wander around a bit and set the spawn
-	createPath(0, mapX, mapY, occupied);
-	createPath(1, mapX, mapY, occupied);
-	createPath(2, mapX, mapY, occupied);
-	createPath(3, mapX, mapY, occupied);
+	createPath(0, occupied);
+	createPath(1, occupied);
+	createPath(2, occupied);
+	createPath(3, occupied);
 
 	// Randomly fill in remaining cells with walls
 	for (int j = 0; j < mapY; j++)
@@ -190,7 +192,7 @@ void CollisionsSystem::generateLevel(int numHeroes, int mapX, int mapY)
 	}
 }
 
-void CollisionsSystem::createPath(int id, int mapX, int mapY, std::vector<std::vector<bool>>& occupied)
+void CollisionsSystem::createPath(int id, std::vector<std::vector<bool>>& occupied)
 {
 	Vector2D exit;
 
@@ -245,16 +247,16 @@ Vector2D CollisionsSystem::chooseNextDirection(int x, int y, const Vector2D& las
 	assert(abs(lastDirection.getX() <= 1) && abs(lastDirection.getY() <= 1));
 	
 	int direction = rand() % 4;
-	if (direction <= 1 && !occupied[x + lastDirection.getX()][y + lastDirection.getY()]) 
+	if (direction <= 1 && validPos(x + lastDirection.getX(), y + lastDirection.getY())) 
 		// keep same direction
 		return lastDirection;
-	else if (!occupied[x - lastDirection.getY()][y + lastDirection.getX()] && !occupied[x + lastDirection.getY()][y - lastDirection.getX()])
+	else if (validPos(x - lastDirection.getY(), y + lastDirection.getX()) && validPos(x + lastDirection.getY(), y - lastDirection.getX()))
 	{
 		// turn either direction
 		return direction == 2 ? Vector2D(-lastDirection.getY(), lastDirection.getX()) :
 			Vector2D(lastDirection.getY(), -lastDirection.getX());
 	}
-	else if (!occupied[x - lastDirection.getY()][y + lastDirection.getX()]) 
+	else if (validPos(x - lastDirection.getY(), y + lastDirection.getX())) 
 	{
 		// turn clockwise
 		return Vector2D(-lastDirection.getY(), lastDirection.getX());
@@ -271,8 +273,8 @@ int CollisionsSystem::randomBetween(int low, int high)
 	return rand() % (high-low) + low;
 }
 
-void CollisionsSystem::checkValidPosition(int x, int y)
+bool CollisionsSystem::validPos(int x, int y)
 {
-	//if (mngr_->getComponent<Transform>)
+	return  x > 0 && x < mapX - 1 && y > 0 && y < mapY - 1;
 }
 
