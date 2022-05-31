@@ -12,7 +12,8 @@ CollisionsSystem::~CollisionsSystem() {
 }
 
 void CollisionsSystem::initSystem() {
-	selectorLevel(); 
+	generateLevel(4); 
+	//selectorLevel(); 
 }
 
 void CollisionsSystem::update() {
@@ -140,7 +141,138 @@ void CollisionsSystem::selectorLevel()
 {
 	srand(static_cast<long unsigned int>(time(0)));
 	int level = rand() % 2;
-	std::string filename = "resources/config/level" + std::to_string(1) + ".txt";
+	std::string filename = "resources/config/level" + std::to_string(level) + ".txt";
 	load(filename, 12, 12);
+}
+
+void CollisionsSystem::generateLevel(int numHeroes, int mapX, int mapY)
+{
+	initializeMap(mapX, mapY);
+	//srand(static_cast<long unsigned int>(time(0)));
+	// 0 = vacío
+	// 1 = pared
+	// 2-5 = salidas
+	// 6-9 = personajes
+
+	// Marks which cells are part of a path (cells that must not be walls)
+	std::vector<std::vector<bool>> occupied = std::vector<std::vector<bool>>(mapY, std::vector<bool>(mapX, false));
+
+	// Add outer walls
+	for (int i = 0; i < mapX; ++i)
+	{
+		addBlock(i, 0);
+		addBlock(i, mapY-1);
+		occupied[i][0] = true;
+		occupied[i][mapY-1] = true;
+	}
+	for (int j = 1; j < mapY-1; ++j)
+	{
+		addBlock(0, j);
+		addBlock(mapX-1, j);
+		occupied[0][j] = true;
+		occupied[mapX-1][j] = true;
+	}
+
+	// Choose an exit cell, then wander around a bit and set the spawn
+	createPath(0, mapX, mapY, occupied);
+	createPath(1, mapX, mapY, occupied);
+	createPath(2, mapX, mapY, occupied);
+	createPath(3, mapX, mapY, occupied);
+
+	// Randomly fill in remaining cells with walls
+	for (int j = 0; j < mapY; j++)
+	{
+		for (int i = 0; i < mapX; i++)
+		{
+			if (!occupied[i][j] && rand() % 10 < 6)
+				addBlock(i, j);
+		}
+	}
+}
+
+void CollisionsSystem::createPath(int id, int mapX, int mapY, std::vector<std::vector<bool>>& occupied)
+{
+	Vector2D exit;
+
+	switch (id)
+	{
+	case 0:
+		exit = Vector2D(randomBetween(1, mapX / 2), randomBetween(1, mapY / 2));
+		break;
+	case 1:
+		exit = Vector2D(randomBetween(mapX / 2, mapX - 1), randomBetween(1, mapY / 2));
+		break;
+	case 2:
+		exit = Vector2D(randomBetween(1, mapX / 2), randomBetween(mapY / 2, mapY - 1));
+		break;
+	case 3:
+		exit = Vector2D(randomBetween(mapX / 2, mapX - 1), randomBetween(mapY / 2, mapY - 1));
+		break;
+	}
+	addExit(id, exit.getX(), exit.getY());
+
+	int pathLength = randomBetween(20, 40);
+
+	Vector2D pathDirection;
+	switch (rand() % 4)
+	{
+	case 0:
+		pathDirection = Vector2D(0, 1);
+		break;
+	case 1:
+		pathDirection = Vector2D(0, -1);
+		break;
+	case 2:
+		pathDirection = Vector2D(1, 0);
+		break;
+	case 3:
+		pathDirection = Vector2D(-1, 0);
+		break;
+	}
+	int x = exit.getX(), y = exit.getY();
+	for (int i = 0; i < pathLength; ++i)
+	{
+		occupied[x][y] = true;
+		pathDirection = chooseNextDirection(x, y, pathDirection, occupied);
+		x += pathDirection.getX();
+		y += pathDirection.getY();
+	}
+	mngr_->getSystem<FighterSystem>()->addFighter(id, x, y);
+}
+
+Vector2D CollisionsSystem::chooseNextDirection(int x, int y, const Vector2D& lastDirection, const std::vector<std::vector<bool>>& occupied)
+{
+	assert(abs(lastDirection.getX() <= 1) && abs(lastDirection.getY() <= 1));
+	
+	int direction = rand() % 4;
+	if (direction <= 1 && !occupied[x + lastDirection.getX()][y + lastDirection.getY()]) 
+		// keep same direction
+		return lastDirection;
+	else if (!occupied[x - lastDirection.getY()][y + lastDirection.getX()] && !occupied[x + lastDirection.getY()][y - lastDirection.getX()])
+	{
+		// turn either direction
+		return direction == 2 ? Vector2D(-lastDirection.getY(), lastDirection.getX()) :
+			Vector2D(lastDirection.getY(), -lastDirection.getX());
+	}
+	else if (!occupied[x - lastDirection.getY()][y + lastDirection.getX()]) 
+	{
+		// turn clockwise
+		return Vector2D(-lastDirection.getY(), lastDirection.getX());
+	}
+	else
+	{
+		// turn anti-clockwise
+		return Vector2D(lastDirection.getY(), -lastDirection.getX());
+	}
+}
+
+int CollisionsSystem::randomBetween(int low, int high)
+{
+	return rand() % (high-low) + low;
+}
+
+void CollisionsSystem::checkValidPosition(int x, int y)
+{
+	//if (mngr_->getComponent<Transform>)
 }
 

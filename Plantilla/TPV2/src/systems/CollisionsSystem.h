@@ -64,5 +64,10 @@ private:
 
 	void load(std::string filename, int mapX, int mapY);
 	void selectorLevel();
+	void generateLevel(int numHeroes, int mapX = 12, int mapY = 12);
+	void createPath(int id, int mapX, int mapY, std::vector<std::vector<bool>>& occupied);
+	Vector2D chooseNextDirection(int x, int y, const Vector2D& lastDirection, const std::vector<std::vector<bool>>& occupied);
+	int randomBetween(int low, int high);
+	void checkValidPosition(int x, int y);
 };
 
