@@ -1,5 +1,5 @@
 #include "RenderSystem.h"
-#include "CollisionsSystem.h"
+#include "MapSystem.h"
 #include <map>
 
 void RenderSystem::update()
@@ -88,7 +88,7 @@ void RenderSystem::drawMap()
 	//	SDL_Rect dest = build_sdlrect(blockTr->pos_.getX() * 50.0, blockTr->pos_.getY() * 50.0, blockTr->width_, blockTr->height_);
 	//	t->render(dest, 0);
 	//}
-	auto grid = mngr_->getSystem<CollisionsSystem>()->getGrid();
+	auto grid = mngr_->getSystem<MapSystem>()->getGrid();
 	for (int i = 0; i < (*grid).size(); ++i)
 	{
 		for (int j = 0; j < (*grid)[i].size(); ++j)

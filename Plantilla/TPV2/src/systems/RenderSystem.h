@@ -16,7 +16,7 @@
 #include "../sdlutils/InputHandler.h"
 
 #include "GameCtrlSystem.h"
-#include "CollisionsSystem.h"
+#include "MapSystem.h"
 
 
 class RenderSystem : public ecs::System {

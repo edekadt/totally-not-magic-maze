@@ -9,10 +9,10 @@ class Manager;
 }
 
 class GameCtrlSystem;
-class CollisionsSystem;
+class MapSystem;
 class RenderSystem;
 class BulletsSystem;
-class FighterSystem;
+class HeroSystem;
 class AsteroidsSystem;
 
 
@@ -26,10 +26,10 @@ private:
 	ecs::Manager *mngr_;
 
 	GameCtrlSystem *gameCtrlSys_;
-	CollisionsSystem *collisionsSys_;
+	MapSystem *collisionsSys_;
 	RenderSystem *renderSys_;
 	BulletsSystem* bulletsSys_;
-	FighterSystem* fighterSys_;
+	HeroSystem* fighterSys_;
 	AsteroidsSystem* asteroidsSys_;
 };
 

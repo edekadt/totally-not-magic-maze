@@ -141,10 +141,10 @@
     <ClInclude Include="src\components\Transform.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\CollisionsSystem.h">
+    <ClInclude Include="src\systems\MapSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\FighterSystem.h">
+    <ClInclude Include="src\systems\HeroSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
     <ClInclude Include="src\systems\GameCtrlSystem.h">
@@ -200,21 +200,16 @@
     <ClCompile Include="src\systems\RenderSystem.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\CollisionsSystem.cpp">
+    <ClCompile Include="src\systems\MapSystem.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\FighterSystem.cpp">
+    <ClCompile Include="src\systems\HeroSystem.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\config\asteroid.resources.json">
+    <None Include="resources\config\material.resources.json">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="resources\config\mapaPrueba.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

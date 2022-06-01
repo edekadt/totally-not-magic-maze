@@ -1,13 +1,13 @@
-#include "FighterSystem.h"
+#include "HeroSystem.h"
 #include "../sdlutils/InputHandler.h"
-#include "CollisionsSystem.h"
+#include "MapSystem.h"
 
-void FighterSystem::initSystem() 
+void HeroSystem::initSystem() 
 {
-	addFighterExits();
+	//addFighterExits();
 }
 
-void FighterSystem::update() 
+void HeroSystem::update() 
 {
 	if (active_)
 	{
@@ -40,12 +40,12 @@ void FighterSystem::update()
 	}
 }
 
-ecs::Entity* FighterSystem::getFighterExit(ecs::Entity* fighter)
+ecs::Entity* HeroSystem::getFighterExit(ecs::Entity* fighter)
 {
 	return exits[fighter];
 }
 
-void FighterSystem::receive(const Message& msg) 
+void HeroSystem::receive(const Message& msg) 
 {
 	switch (msg.id)
 	{
@@ -62,7 +62,7 @@ void FighterSystem::receive(const Message& msg)
 	}
 }
 
-void FighterSystem::addFighter(int fighterID, int x, int y)
+void HeroSystem::addFighter(int fighterID, int x, int y)
 {
 	++numFighters;
 	auto* fighter = mngr_->addEntity(ecs::_grp_FIGHTERS);
@@ -88,7 +88,7 @@ void FighterSystem::addFighter(int fighterID, int x, int y)
 	
 }
 
-void FighterSystem::addFighterExits()
+void HeroSystem::addFighterExits()
 {
 	switch (numFighters)
 	{
@@ -104,23 +104,23 @@ void FighterSystem::addFighterExits()
 	}
 }
 
-void FighterSystem::resetLevel()
+void HeroSystem::resetLevel()
 {
 	numFighters = 0; 
 	exits.clear(); 
 }
 
-void FighterSystem::onRoundOver()
+void HeroSystem::onRoundOver()
 {
 	active_ = false; 
 }
 
-void FighterSystem::onRoundStart()
+void HeroSystem::onRoundStart()
 {
 	active_ = true; 
 }
 
-void FighterSystem::move(int x, int y)
+void HeroSystem::move(int x, int y)
 {
 	for (auto e : mngr_->getEntities(ecs::_grp_FIGHTERS))
 	{
@@ -135,10 +135,10 @@ void FighterSystem::move(int x, int y)
 	movimientos++;
 }
 
-bool FighterSystem::checkMove(Transform* tr, int x, int y)
+bool HeroSystem::checkMove(Transform* tr, int x, int y)
 {
 	// Si hay una pared delante, no movemos
-	auto grid = mngr_->getSystem<CollisionsSystem>()->getGrid();
+	auto grid = mngr_->getSystem<MapSystem>()->getGrid();
 	GameMap::Cells cell = (*grid)[(int)(tr->pos_.getX() + x)][(int)(tr->pos_.getY() + y)];
 	if (cell == GameMap::Cells::Wall)
 		return false;

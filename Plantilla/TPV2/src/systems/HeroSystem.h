@@ -19,13 +19,13 @@
 #include "GameCtrlSystem.h"
 //#include "messages.h"
 
-class FighterSystem : public ecs::System {
+class HeroSystem : public ecs::System {
 public:
 
 	__SYSID_DECL__(ecs::_sys_FIGHTERSYSTEM);
 
-	FighterSystem() {}
-	~FighterSystem() {}
+	HeroSystem() {}
+	~HeroSystem() {}
 
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	void receive(const Message& m);

@@ -6,10 +6,10 @@
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/SDLUtils.h"
 
-#include "../systems/CollisionsSystem.h"
+#include "../systems/MapSystem.h"
 #include "../systems/GameCtrlSystem.h"
 #include "../systems/RenderSystem.h"
-#include "../systems/FighterSystem.h"
+#include "../systems/HeroSystem.h"
 
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
@@ -31,7 +31,7 @@ void Game::init() {
 
 	// Initialize the SDLUtils singleton
 	SDLUtils::init("Magic Maze", 600, 600,
-			"resources/config/asteroid.resources.json");
+			"resources/config/material.resources.json");
 
 	sdlutils().hideCursor();
 
@@ -39,15 +39,15 @@ void Game::init() {
 	mngr_ = new Manager();
 
 	gameCtrlSys_ = mngr_->addSystem<GameCtrlSystem>();
-	collisionsSys_ = mngr_->addSystem<CollisionsSystem>();
-	fighterSys_ = mngr_->addSystem<FighterSystem>();
+	collisionsSys_ = mngr_->addSystem<MapSystem>();
+	fighterSys_ = mngr_->addSystem<HeroSystem>();
 	renderSys_ = mngr_->addSystem<RenderSystem>();
 }
 
 void Game::start() {
 	mngr_->getSystem<GameCtrlSystem>()->initSystem();
-	mngr_->getSystem<CollisionsSystem>()->initSystem();
-	mngr_->getSystem<FighterSystem>()->initSystem();
+	mngr_->getSystem<MapSystem>()->initSystem();
+	mngr_->getSystem<HeroSystem>()->initSystem();
 	mngr_->getSystem<RenderSystem>()->initSystem();
 
 	// a boolean to exit the loop

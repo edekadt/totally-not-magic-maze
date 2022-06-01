@@ -43,8 +43,8 @@
     <ClInclude Include="src\sdlutils\SoundEffect.h" />
     <ClInclude Include="src\sdlutils\Texture.h" />
     <ClInclude Include="src\sdlutils\VirtualTimer.h" />
-    <ClInclude Include="src\systems\CollisionsSystem.h" />
-    <ClInclude Include="src\systems\FighterSystem.h" />
+    <ClInclude Include="src\systems\MapSystem.h" />
+    <ClInclude Include="src\systems\HeroSystem.h" />
     <ClInclude Include="src\systems\GameCtrlSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\utils\Collisions.h" />
@@ -64,18 +64,15 @@
     <ClCompile Include="src\sdlutils\sdlutils_demo.cpp" />
     <ClCompile Include="src\sdlutils\SoundEffect.cpp" />
     <ClCompile Include="src\sdlutils\Texture.cpp" />
-    <ClCompile Include="src\systems\CollisionsSystem.cpp" />
-    <ClCompile Include="src\systems\FighterSystem.cpp" />
+    <ClCompile Include="src\systems\MapSystem.cpp" />
+    <ClCompile Include="src\systems\HeroSystem.cpp" />
     <ClCompile Include="src\systems\GameCtrlSystem.cpp" />
     <ClCompile Include="src\systems\RenderSystem.cpp" />
     <ClCompile Include="src\utils\Collisions.cpp" />
     <ClCompile Include="src\utils\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\config\asteroid.resources.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="resources\config\mapaPrueba.txt" />
+    <None Include="resources\config\material.resources.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -1,44 +1,45 @@
 // This file is part of the course TPV2@UCM - Samir Genaim
 
-#include "CollisionsSystem.h"
+#include "MapSystem.h"
 #include "RenderSystem.h"
-#include "FighterSystem.h"
+#include "HeroSystem.h"
 #include <random>
 
-CollisionsSystem::CollisionsSystem() : active_(false) {
+MapSystem::MapSystem() : active_(false) {
 }
 
-CollisionsSystem::~CollisionsSystem() {
+MapSystem::~MapSystem() {
 }
 
-void CollisionsSystem::initSystem() {
+void MapSystem::initSystem() {
 	generateLevel(4); 
 	//selectorLevel(); 
 }
 
-void CollisionsSystem::update() {
+void MapSystem::update() {
 	auto& fighters = mngr_->getEntities(ecs::_grp_FIGHTERS);
 
 	for (ecs::Entity* e : fighters) {
 		auto tr = mngr_->getComponent<Transform>(e);
-		auto exitPos = mngr_->getComponent<Transform>(mngr_->getSystem<FighterSystem>()->getFighterExit(e))->pos_;
+		auto exitPos = mngr_->getComponent<Transform>(mngr_->getSystem<HeroSystem>()->getFighterExit(e))->pos_;
 		if ((int)tr->pos_.getX() == (int)exitPos.getX() && (int)tr->pos_.getY() == (int)exitPos.getY())
 		{
 			std::cout << "Exit";
 			mngr_->setAlive(e, false); 
-			players--; 
+			aliveFighters--; 
 
-			if (players <= 0)
+			if (aliveFighters <= 0)
 			{
-				mngr_->getSystem<FighterSystem>()->resetLevel(); 
-				selectorLevel(); 
-				//cleanMap(); 
+				clearMap(); 
+				mngr_->getSystem<HeroSystem>()->resetLevel(); 
+				auto fighters = randomBetween(2, 4);
+				generateLevel(fighters); 
 			}
 		}
 	}
 }
 
-void CollisionsSystem::addExit(int exitID, int x, int y)
+void MapSystem::addExit(int exitID, int x, int y)
 {
 	ecs::hdlrId exitHdlr;
 	switch (exitID)
@@ -67,12 +68,12 @@ void CollisionsSystem::addExit(int exitID, int x, int y)
 	mngr_->setHandler(exitHdlr, base);
 }
 
-void CollisionsSystem::addBlock(int x, int y)
+void MapSystem::addBlock(int x, int y)
 {
 	(*grid)[x][y] = GameMap::Cells::Wall;
 }
 
-void CollisionsSystem::initializeMap(int mapX, int mapY)
+void MapSystem::initializeMap(int mapX, int mapY)
 {
 	grid = new GameMap::Grid(mapY);
 	for (int i = 0; i < mapX; ++i)
@@ -83,7 +84,7 @@ void CollisionsSystem::initializeMap(int mapX, int mapY)
 	}
 }
 
-void CollisionsSystem::receive(const Message& m) {
+void MapSystem::receive(const Message& m) {
 	switch (m.id) {
 	case _m_ROUND_START:
 		active_ = true;
@@ -96,7 +97,7 @@ void CollisionsSystem::receive(const Message& m) {
 	}
 }
 
-void CollisionsSystem::load(std::string filename, int mapX, int mapY)
+void MapSystem::load(std::string filename, int mapX, int mapY)
 {
 	initializeMap(mapX, mapY);
 	// 0 = vac�o
@@ -130,17 +131,17 @@ void CollisionsSystem::load(std::string filename, int mapX, int mapY)
 			case'7':
 			case'8':
 			case'9':
-				mngr_->getSystem<FighterSystem>()->addFighter(text[i] - '6', i, j);
-				players++; 
+				mngr_->getSystem<HeroSystem>()->addFighter(text[i] - '6', i, j);
+				aliveFighters++; 
 				break;
 			}
 		}
 	}
 
-	mngr_->getSystem<FighterSystem>()->addFighterExits(); 
+	
 }
 
-void CollisionsSystem::selectorLevel()
+void MapSystem::selectorLevel()
 {
 	srand(static_cast<long unsigned int>(time(0)));
 	int level = rand() % 2;
@@ -148,7 +149,7 @@ void CollisionsSystem::selectorLevel()
 	load(filename, 12, 12);
 }
 
-void CollisionsSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
+void MapSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
 {
 	mapX = mapX_;
 	mapY = mapY_;
@@ -179,23 +180,23 @@ void CollisionsSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
 	}
 
 	// Choose an exit cell, then wander around a bit and set the spawn
-	createPath(0, occupied);
-	createPath(1, occupied);
-	createPath(2, occupied);
-	createPath(3, occupied);
+	for (int i = 0; i < numHeroes; i++)
+		createPath(i, occupied);
 
 	// Randomly fill in remaining cells with walls
 	for (int j = 0; j < mapY; j++)
 	{
 		for (int i = 0; i < mapX; i++)
 		{
-			if (!occupied[i][j] && rand() % 10 < 6)
+			if (!occupied[i][j])
 				addBlock(i, j);
 		}
 	}
+
+	mngr_->getSystem<HeroSystem>()->addFighterExits();
 }
 
-void CollisionsSystem::createPath(int id, std::vector<std::vector<bool>>& occupied)
+void MapSystem::createPath(int id, std::vector<std::vector<bool>>& occupied)
 {
 	Vector2D exit;
 
@@ -205,10 +206,10 @@ void CollisionsSystem::createPath(int id, std::vector<std::vector<bool>>& occupi
 		exit = Vector2D(randomBetween(1, mapX / 2), randomBetween(1, mapY / 2));
 		break;
 	case 1:
-		exit = Vector2D(randomBetween(mapX / 2, mapX - 1), randomBetween(1, mapY / 2));
+		exit = Vector2D(randomBetween(1, mapX / 2), randomBetween(mapY / 2, mapY - 1));
 		break;
 	case 2:
-		exit = Vector2D(randomBetween(1, mapX / 2), randomBetween(mapY / 2, mapY - 1));
+		exit = Vector2D(randomBetween(mapX / 2, mapX - 1), randomBetween(1, mapY / 2));
 		break;
 	case 3:
 		exit = Vector2D(randomBetween(mapX / 2, mapX - 1), randomBetween(mapY / 2, mapY - 1));
@@ -242,10 +243,14 @@ void CollisionsSystem::createPath(int id, std::vector<std::vector<bool>>& occupi
 		x += pathDirection.getX();
 		y += pathDirection.getY();
 	}
-	mngr_->getSystem<FighterSystem>()->addFighter(id, x, y);
+
+	occupied[x][y] = true; 
+
+	mngr_->getSystem<HeroSystem>()->addFighter(id, x, y);
+	aliveFighters++; 
 }
 
-Vector2D CollisionsSystem::chooseNextDirection(int x, int y, const Vector2D& lastDirection, const std::vector<std::vector<bool>>& occupied)
+Vector2D MapSystem::chooseNextDirection(int x, int y, const Vector2D& lastDirection, const std::vector<std::vector<bool>>& occupied)
 {
 	assert(abs(lastDirection.getX() <= 1) && abs(lastDirection.getY() <= 1));
 	
@@ -271,13 +276,31 @@ Vector2D CollisionsSystem::chooseNextDirection(int x, int y, const Vector2D& las
 	}
 }
 
-int CollisionsSystem::randomBetween(int low, int high)
+int MapSystem::randomBetween(int low, int high)
 {
 	return rand() % (high-low) + low;
 }
 
-bool CollisionsSystem::validPos(int x, int y)
+bool MapSystem::validPos(int x, int y)
 {
 	return  x > 0 && x < mapX - 1 && y > 0 && y < mapY - 1;
+}
+
+void MapSystem::clearMap()
+{
+	for (auto bloque : mngr_->getEntities(ecs::_grp_BLOCKS))
+	{
+		mngr_->setAlive(bloque, false); 
+	}
+		 
+	for (auto fighter : mngr_->getEntities(ecs::_grp_FIGHTERS))
+	{
+		mngr_->setAlive(fighter, false); 
+	}
+
+	for (auto exit : mngr_->getEntities(ecs::_grp_EXITS))
+	{
+		mngr_->setAlive(exit, false); 
+	}
 }
 

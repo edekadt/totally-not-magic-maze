@@ -29,7 +29,7 @@ namespace GameMap
 
 struct Transform;
 
-class CollisionsSystem: public ecs::System {
+class MapSystem: public ecs::System {
 
 	void initializeMap(int mapX, int mapY);
 
@@ -38,8 +38,8 @@ public:
 	__SYSID_DECL__(ecs::_sys_COLLISIONSYSTEM);
 
 	void receive(const Message&) override;
-	CollisionsSystem();
-	virtual ~CollisionsSystem();
+	MapSystem();
+	virtual ~MapSystem();
 
 	void initSystem(); 
 
@@ -56,7 +56,7 @@ private:
 
 	Transform* baseTr; 
 
-	int players = 0;
+	int aliveFighters = 0;
 	int exits = 0; 
 
 	void addExit(int exitID, int x, int y);
@@ -70,5 +70,7 @@ private:
 	int randomBetween(int low, int high);
 	bool validPos(int x, int y);
 	int mapX, mapY;
+
+	void clearMap(); 
 };
 
