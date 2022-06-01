@@ -38,8 +38,8 @@
  *
  */
 
-#if __has_include("messages_defs.h")
-#include "messages_defs.h"
+#if __has_include("../game/messages_defs.h")
+#include "../game/messages_defs.h"
 #else
 #include <cstdint>
 struct Message {

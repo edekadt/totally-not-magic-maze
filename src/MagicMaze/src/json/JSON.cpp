@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "JSON.h"
+#include "../json/JSON.h"
 
 #include <fstream>
 

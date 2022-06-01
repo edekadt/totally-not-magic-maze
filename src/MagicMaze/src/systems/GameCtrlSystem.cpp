@@ -3,10 +3,10 @@
 #include "GameCtrlSystem.h"
 #include "HeroSystem.h"
 
-#include "Manager.h"
+#include "../ecs/Manager.h"
 
-#include "InputHandler.h"
-#include "SDLUtils.h"
+#include "../sdlutils/InputHandler.h"
+#include "../sdlutils/SDLUtils.h"
 
 GameCtrlSystem::GameCtrlSystem() :
 		state_(NEWGAME), 

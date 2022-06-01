@@ -2,17 +2,17 @@
 
 #include "Game.h"
 
-#include "Manager.h"
-#include "InputHandler.h"
-#include "SDLUtils.h"
+#include "../ecs/Manager.h"
+#include "../sdlutils/InputHandler.h"
+#include "../sdlutils/SDLUtils.h"
 
-#include "MapSystem.h"
-#include "GameCtrlSystem.h"
-#include "RenderSystem.h"
-#include "HeroSystem.h"
+#include "../systems/MapSystem.h"
+#include "../systems/GameCtrlSystem.h"
+#include "../systems/RenderSystem.h"
+#include "../systems/HeroSystem.h"
 
-#include "Vector2D.h"
-#include "Collisions.h"
+#include "../utils/Vector2D.h"
+#include "../utils/Collisions.h"
 
 using ecs::Manager;
 

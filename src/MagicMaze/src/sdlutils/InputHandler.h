@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <array>
 
-#include "Singleton.h"
+#include "../utils/Singleton.h"
 
 // Instead of a Singleton class, we could make it part of
 // SDLUtils as well.

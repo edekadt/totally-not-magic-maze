@@ -1,8 +1,8 @@
 // This file is part of the course TPV2@UCM - Samir Genaim
 
 #pragma once
-#include "Component.h"
-#include "Vector2D.h"
+#include "../ecs/Component.h"
+#include "../utils/Vector2D.h"
 #include <cassert>
 
 struct Transform: ecs::Component {

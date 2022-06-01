@@ -6,18 +6,18 @@
 #include <cstdint>
 #include <fstream>
 
-#include "System.h"
-#include "Manager.h"
-#include "Entity.h"
-#include "messages.h"
+#include "../ecs/System.h"
+#include "../ecs/Manager.h"
+#include "../ecs/Entity.h"
+#include "../ecs/messages.h"
 
-#include "Vector2D.h"
-#include "Collisions.h"
+#include "../utils/Vector2D.h"
+#include "../utils/Collisions.h"
 
-#include "Transform.h"
+#include "../components/Transform.h"
 
-#include "SDLUtils.h"
-#include "InputHandler.h"
+#include "../sdlutils/SDLUtils.h"
+#include "../sdlutils/InputHandler.h"
 
 #include "GameCtrlSystem.h"
 #include <string>

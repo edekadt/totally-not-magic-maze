@@ -5,7 +5,7 @@
 #include <cassert>
 #include <memory>
 
-#include "JSON.h"
+#include "../json/JSON.h"
 
 SDLUtils::SDLUtils() :
 		SDLUtils("SDL Demo", 600, 400) {

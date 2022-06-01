@@ -3,9 +3,9 @@
 #pragma once
 
 #include <cstdint>
-#include "ecs.h"
+#include "../ecs/ecs.h"
 
-#include "Vector2D.h"
+#include "../utils/Vector2D.h"
 
 using msgId_type = uint8_t;
 enum msgId : msgId_type {
