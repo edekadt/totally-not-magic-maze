@@ -83,6 +83,8 @@ void FighterSystem::addFighter(int fighterID, int x, int y)
 		mngr_->setHandler(ecs::_hdlr_CAZA3, fighter);
 		break;
 	}
+
+	//addFighterExits(); 
 	
 }
 
@@ -100,6 +102,12 @@ void FighterSystem::addFighterExits()
 		exits.emplace(mngr_->getHandler(ecs::_hdlr_CAZA0), mngr_->getHandler(ecs::_hdlr_EXIT0));
 		break;
 	}
+}
+
+void FighterSystem::resetLevel()
+{
+	numFighters = 0; 
+	exits.clear(); 
 }
 
 void FighterSystem::onRoundOver()

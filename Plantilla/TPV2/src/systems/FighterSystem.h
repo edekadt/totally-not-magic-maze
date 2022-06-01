@@ -43,11 +43,13 @@ public:
 	ecs::Entity* getFighterExit(ecs::Entity* fighter);
 
 	void addFighter(int fighterID, int x, int y);
+	void addFighterExits();
+
+	void resetLevel();
 	
 private:
 	// Asocia cada fighter con su salida
 	std::map<ecs::Entity*, ecs::Entity*> exits;
-	void addFighterExits();
 
 	// Para gestionar el mensaje de que ha acabado una ronda. Desactivar el sistema.
 	void onRoundOver();

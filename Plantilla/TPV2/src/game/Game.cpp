@@ -68,9 +68,9 @@ void Game::start() {
 
 		mngr_->refresh();
 
-		fighterSys_->update();
-		collisionsSys_->update();
 		gameCtrlSys_->update();
+		fighterSys_->update();
+		collisionsSys_->update();	
 
 		sdlutils().clearRenderer();
 		renderSys_->update();

@@ -56,13 +56,15 @@ private:
 
 	Transform* baseTr; 
 
-	const int maxPlayers = 2; 
-	int players = maxPlayers;
+	int players = 0;
+	int exits = 0; 
 
 	void addExit(int exitID, int x, int y);
 	void addBlock(int x, int y);
 
 	void load(std::string filename, int mapX, int mapY);
 	void selectorLevel();
+
+	void cleanMap(); 
 };
 

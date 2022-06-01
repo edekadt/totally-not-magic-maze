@@ -29,9 +29,9 @@ void CollisionsSystem::update() {
 
 			if (players <= 0)
 			{
-				Message m; 
-				m.id = _m_GAME_OVER; 
-				mngr_->send(m); 
+				mngr_->getSystem<FighterSystem>()->resetLevel(); 
+				selectorLevel(); 
+				//cleanMap(); 
 			}
 		}
 	}
@@ -130,10 +130,13 @@ void CollisionsSystem::load(std::string filename, int mapX, int mapY)
 			case'8':
 			case'9':
 				mngr_->getSystem<FighterSystem>()->addFighter(text[i] - '6', i, j);
+				players++; 
 				break;
 			}
 		}
 	}
+
+	mngr_->getSystem<FighterSystem>()->addFighterExits(); 
 }
 
 void CollisionsSystem::selectorLevel()
@@ -142,5 +145,19 @@ void CollisionsSystem::selectorLevel()
 	int level = rand() % 2;
 	std::string filename = "resources/config/level" + std::to_string(1) + ".txt";
 	load(filename, 12, 12);
+}
+
+void CollisionsSystem::cleanMap()
+{
+	for (auto i : mngr_->getEntities(ecs::_grp_BLOCKS))
+		mngr_->setAlive(i, false); 
+
+	for (auto player : mngr_->getEntities(ecs::_grp_FIGHTERS))
+		mngr_->setAlive(player, false); 
+
+	for (auto exit : mngr_->getEntities(ecs::_grp_EXITS))
+		mngr_->setAlive(exit, false); 
+
+	selectorLevel(); 
 }
 
