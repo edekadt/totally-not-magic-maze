@@ -1,8 +1,7 @@
-// This file is part of the course TPV2@UCM - Samir Genaim
-
 #include "MapSystem.h"
 #include "RenderSystem.h"
 #include "HeroSystem.h"
+
 #include <random>
 
 MapSystem::MapSystem() : active_(false) {
@@ -12,8 +11,8 @@ MapSystem::~MapSystem() {
 }
 
 void MapSystem::initSystem() {
-	generateLevel(4); 
-	//selectorLevel(); 
+	load(12, 12); 
+	//generateLevel(4); 
 }
 
 void MapSystem::update() {
@@ -84,20 +83,7 @@ void MapSystem::initializeMap(int mapX, int mapY)
 	}
 }
 
-void MapSystem::receive(const Message& m) {
-	switch (m.id) {
-	case _m_ROUND_START:
-		active_ = true;
-		break;
-	case _m_ROUND_OVER:
-		active_ = false;
-		break;
-	default:
-		break;
-	}
-}
-
-void MapSystem::load(std::string filename, int mapX, int mapY)
+void MapSystem::load(int mapX, int mapY)
 {
 	initializeMap(mapX, mapY);
 	// 0 = vac�o
@@ -105,7 +91,7 @@ void MapSystem::load(std::string filename, int mapX, int mapY)
 	// 2-5 = salidas
 	// 6-9 = personajes
 
-	std::fstream src(filename);
+	std::fstream src("resources/config/level1.txt");
 	std::string text;
 
 	for (int j = 0; j < mapY; j++)
@@ -138,15 +124,7 @@ void MapSystem::load(std::string filename, int mapX, int mapY)
 		}
 	}
 
-	
-}
-
-void MapSystem::selectorLevel()
-{
-	srand(static_cast<long unsigned int>(time(0)));
-	int level = rand() % 2;
-	std::string filename = "resources/config/level" + std::to_string(level) + ".txt";
-	load(filename, 12, 12);
+	mngr_->getSystem<HeroSystem>()->addFighterExits();
 }
 
 void MapSystem::generateLevel(int numHeroes, int mapX_, int mapY_)

@@ -37,7 +37,7 @@ public:
 
 	__SYSID_DECL__(ecs::_sys_COLLISIONSYSTEM);
 
-	void receive(const Message&) override;
+	void receive(const Message&) override {}
 	MapSystem();
 	virtual ~MapSystem();
 
@@ -62,8 +62,7 @@ private:
 	void addExit(int exitID, int x, int y);
 	void addBlock(int x, int y);
 
-	void load(std::string filename, int mapX, int mapY);
-	void selectorLevel();
+	void load(int mapX, int mapY);
 	void generateLevel(int numHeroes, int mapX_ = 12, int mapY_ = 12);
 	void createPath(int id, std::vector<std::vector<bool>>& occupied);
 	Vector2D chooseNextDirection(int x, int y, const Vector2D& lastDirection, const std::vector<std::vector<bool>>& occupied);
