@@ -11,7 +11,7 @@
 
 
 #include <cstdint>
-#include "../ecs/ecs.h"
+#include "ecs.h"
 
 using msgId_type = uint8_t;
 enum msgId : msgId_type {

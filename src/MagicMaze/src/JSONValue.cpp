@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "../json/JSONValue.h"
+#include "JSONValue.h"
 
 #include <stdio.h>
 #include <string.h>

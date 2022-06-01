@@ -1,5 +1,5 @@
 #include "HeroSystem.h"
-#include "../sdlutils/InputHandler.h"
+#include "InputHandler.h"
 #include "MapSystem.h"
 
 void HeroSystem::initSystem() 
@@ -143,7 +143,7 @@ bool HeroSystem::checkMove(Transform* tr, int x, int y)
 	if (cell == GameMap::Cells::Wall)
 		return false;
 
-	// Comprobamos que ninguno de los otros personajes está delante
+	// Comprobamos que ninguno de los otros personajes estï¿½ delante
 	for (auto f : mngr_->getEntities(ecs::_grp_FIGHTERS))
 	{
 		auto otherTr = mngr_->getComponent<Transform>(f);
