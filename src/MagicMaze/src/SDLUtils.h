@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 
-#include "../utils/Singleton.h"
+#include "Singleton.h"
 #include "RandomNumberGenerator.h"
 #include "Font.h"
 #include "Music.h"

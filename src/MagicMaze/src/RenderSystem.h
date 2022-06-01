@@ -3,17 +3,17 @@
 #include <array>
 #include <cstdint>
 
-#include "../ecs/System.h"
-#include "../ecs/Manager.h"
-#include "../ecs/Entity.h"
+#include "System.h"
+#include "Manager.h"
+#include "Entity.h"
 
-#include "../utils/Vector2D.h"
+#include "Vector2D.h"
 
-#include "../components/Image.h"
-#include "../components/Transform.h"
+#include "Image.h"
+#include "Transform.h"
 
-#include "../sdlutils/SDLUtils.h"
-#include "../sdlutils/InputHandler.h"
+#include "SDLUtils.h"
+#include "InputHandler.h"
 
 #include "GameCtrlSystem.h"
 #include "MapSystem.h"
@@ -24,16 +24,16 @@ public:
 
 	__SYSID_DECL__(ecs::_sys_RENDERSYSTEM);
 
-	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
+	// Reaccionar a los mensajes recibidos (llamando a mï¿½todos correspondientes).
 	void receive(const Message& m) override;
 
 	// Inicializar el sistema, etc.
 	void initSystem() override;
 
-	// - Dibujar asteroides, balas y caza (sólo si el juego no está parado).
+	// - Dibujar asteroides, balas y caza (sï¿½lo si el juego no estï¿½ parado).
 	// - Dibujar las vidas (siempre).
-	// - Dibujar los mensajes correspondiente: si el juego está parado, etc (como en
-	// la práctica 1)
+	// - Dibujar los mensajes correspondiente: si el juego estï¿½ parado, etc (como en
+	// la prï¿½ctica 1)
 	void update() override;
 
 private:

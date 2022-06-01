@@ -4,7 +4,7 @@
 #include <array>
 #include <cstdint>
 
-#include "../ecs/System.h"
+#include "System.h"
 
 class GameCtrlSystem: public ecs::System {
 public:
