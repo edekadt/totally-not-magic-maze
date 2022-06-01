@@ -1,30 +1,21 @@
-CC=g++
-CFLAGS=-g -I.
-CXXFLAGS := -std=c++17 $(CXXFLAGS)
-DEPS = ./network/Socket.h ./network/Chat.h
-OBJ = Socket.o Chat.o
-LIBS=-lpthread -lSDL2
+SRC_DIR := client
+COMMON_DIR := common
 
-%.o: %.cc $(DEPS)
-	$(CC) -Wall -g -c -o $@ $< $(CFLAGS)
+SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) 
+COMMON_FILES := $(wildcard $(COMMON_DIR)/*.cpp) $(wildcard $(COMMON_DIR)/*/*.cpp) 
 
-all: cs cc
-Chat.o: Chat.cc
-	g++ -Wall -c -g ./network/Chat.cc $(CXXFLAGS)
-ChatServer.o: ./network/ChatServer.cc
-	g++ -Wall -c -g ./network/ChatServer.cc $(CXXFLAGS)
-ChatClient.o: ./network/ChatClient.cc
-	g++ -Wall -c -g ./network/ChatClient.cc $(CXXFLAGS)
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(SRC_DIR)/%.o,$(SRC_FILES)) $(patsubst $(COMMON_DIR)/%.cpp,$(COMMON_DIR)/%.o,$(COMMON_FILES))
 
-cs: $(OBJ) ChatServer.o
-	g++ -o $@ $^ $(CFLAGS) $(LIBS)
+EXEC_FILE := MagicMazeClient.out
 
-cc: $(OBJ) ChatClient.o
-	g++ -o $@ $^ $(CFLAGS) $(LIBS)
+LDFLAGS := -L/usr/lib/x86_64-linux-gnu -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2 -lpthread
+CPPFLAGS := --std=c++17 -I/usr/include/SDL2
 
+$(EXEC_FILE): $(OBJ_FILES)
+	g++ -o $@ $^ $(LDFLAGS)
 
-.PHONY: clean
+$(OBJ_DIR)/%.o: $(OBJ_DIR)/%.cpp
+	g++ $(CPPFLAGS) -c -o $@ $<
 
 clean:
-	rm -f *.o cs cc
-
+	rm -f $(EXEC_FILE) $(OBJ_FILES)
