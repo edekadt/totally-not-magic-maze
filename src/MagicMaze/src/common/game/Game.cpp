@@ -60,7 +60,7 @@ void Game::start() {
 			continue;
 		}
 
-		//mngr_->refresh();
+		mngr_->refresh();
 
 		fighterSys_->update();
 		collisionsSys_->update();	

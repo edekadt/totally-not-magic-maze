@@ -172,7 +172,7 @@ public:
 		msgs_aux_.clear();
 	}*/
 	
-	//void refresh();
+	void refresh();
 
 private:
 

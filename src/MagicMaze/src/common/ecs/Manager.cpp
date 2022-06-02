@@ -1,6 +1,7 @@
 // This file is part of the course TPV2@UCM - Samir Genaim
 
 #include "Manager.h"
+#include <algorithm>
 
 namespace ecs {
 
@@ -37,7 +38,7 @@ Manager::~Manager() {
 			delete sys_[i];
 }
 
-/*void Manager::refresh() {
+void Manager::refresh() {
 
 	// remove dead entities from the groups lists, and also those
 	// do not belong to the group anymore
@@ -55,6 +56,6 @@ Manager::~Manager() {
 						}), groupEntities.end());
 	}
 
-}*/
+}
 
 } // end of namespace

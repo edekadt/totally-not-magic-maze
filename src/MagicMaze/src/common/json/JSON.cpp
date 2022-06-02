@@ -48,7 +48,7 @@ JSON::JSON()
  * @return JSONValue* Returns a JSON Value representing the root, or NULL on error
  */
 JSONValue *JSON::ParseFromFile(std::string filename) {
-
+	std::cout<<filename;
 	std::ifstream in(filename);
 
 	// assert( !t.fail() );
