@@ -1,15 +1,13 @@
-// This file is part of the course TPV2@UCM - Samir Genaim
-
 #pragma once
 
 #include <array>
 #include <cstdint>
 #include <fstream>
+#include <string>
 
 #include "../ecs/System.h"
 #include "../ecs/Manager.h"
 #include "../ecs/Entity.h"
-#include "../ecs/messages.h"
 
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
@@ -19,8 +17,6 @@
 #include "../sdlutils/SDLUtils.h"
 #include "../sdlutils/InputHandler.h"
 
-#include "GameCtrlSystem.h"
-#include <string>
 namespace GameMap
 {
 	enum class Cells { Empty, Wall, Exit};
@@ -37,7 +33,6 @@ public:
 
 	__SYSID_DECL__(ecs::_sys_COLLISIONSYSTEM);
 
-	void receive(const Message&) override {}
 	MapSystem();
 	virtual ~MapSystem();
 
@@ -49,10 +44,6 @@ public:
 
 private:
 	GameMap::Grid* grid;
-
-	bool active_;
-
-	Message m; 
 
 	Transform* baseTr; 
 

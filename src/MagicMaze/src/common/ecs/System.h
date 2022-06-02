@@ -3,7 +3,6 @@
 #pragma once
 
 #include "ecs.h"
-#include "messages.h"
 
 namespace ecs {
 
@@ -39,15 +38,6 @@ public:
 	// even called because they are there just to receive and react to messages
 	//
 	virtual void update() {
-	}
-
-	// a method to receive a message, will be called by the sender or
-	// from the manager when a message is sent to all
-	//
-	// the struct msg is forward declared in ecs.h, the actual meesage will
-	// be defined by the user
-	//
-	virtual void receive(const Message&) {
 	}
 
 protected:

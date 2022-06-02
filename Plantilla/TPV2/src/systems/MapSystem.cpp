@@ -4,7 +4,7 @@
 
 #include <random>
 
-MapSystem::MapSystem() : active_(false) {
+MapSystem::MapSystem() {
 }
 
 MapSystem::~MapSystem() {
@@ -23,7 +23,6 @@ void MapSystem::update() {
 		auto exitPos = mngr_->getComponent<Transform>(mngr_->getSystem<HeroSystem>()->getFighterExit(e))->pos_;
 		if ((int)tr->pos_.getX() == (int)exitPos.getX() && (int)tr->pos_.getY() == (int)exitPos.getY())
 		{
-			std::cout << "Exit";
 			mngr_->setAlive(e, false); 
 			aliveFighters--; 
 
@@ -31,7 +30,7 @@ void MapSystem::update() {
 			{
 				clearMap(); 
 				mngr_->getSystem<HeroSystem>()->resetLevel(); 
-				auto fighters = randomBetween(2, 4);
+				auto fighters = randomBetween(2, 5);
 				generateLevel(fighters); 
 			}
 		}

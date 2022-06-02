@@ -1,5 +1,3 @@
-// This file is part of the course TPV2@UCM - Samir Genaim
-
 #include "Game.h"
 
 #include "../ecs/Manager.h"
@@ -7,7 +5,6 @@
 #include "../sdlutils/SDLUtils.h"
 
 #include "../systems/MapSystem.h"
-#include "../systems/GameCtrlSystem.h"
 #include "../systems/RenderSystem.h"
 #include "../systems/HeroSystem.h"
 
@@ -19,7 +16,6 @@ using ecs::Manager;
 Game::Game() :
 		mngr_(nullptr), //
 	    fighterSys_(nullptr), //
-		gameCtrlSys_(nullptr), //
 		collisionsSys_(nullptr), //
 		renderSys_(nullptr) {}
 
@@ -38,14 +34,12 @@ void Game::init() {
 	// Create the manager
 	mngr_ = new Manager();
 
-	gameCtrlSys_ = mngr_->addSystem<GameCtrlSystem>();
 	collisionsSys_ = mngr_->addSystem<MapSystem>();
 	fighterSys_ = mngr_->addSystem<HeroSystem>();
 	renderSys_ = mngr_->addSystem<RenderSystem>();
 }
 
 void Game::start() {
-	mngr_->getSystem<GameCtrlSystem>()->initSystem();
 	mngr_->getSystem<MapSystem>()->initSystem();
 	mngr_->getSystem<HeroSystem>()->initSystem();
 	mngr_->getSystem<RenderSystem>()->initSystem();
@@ -68,7 +62,6 @@ void Game::start() {
 
 		mngr_->refresh();
 
-		gameCtrlSys_->update();
 		fighterSys_->update();
 		collisionsSys_->update();	
 

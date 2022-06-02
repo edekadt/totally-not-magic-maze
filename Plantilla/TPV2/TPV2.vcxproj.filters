@@ -60,9 +60,6 @@
     <ClInclude Include="src\json\JSONValue.h">
       <Filter>Header Files\json</Filter>
     </ClInclude>
-    <ClInclude Include="src\json\json_demo.h">
-      <Filter>Header Files\json</Filter>
-    </ClInclude>
     <ClInclude Include="src\json\JSON.h">
       <Filter>Header Files\json</Filter>
     </ClInclude>
@@ -87,19 +84,10 @@
     <ClInclude Include="src\sdlutils\macros.h">
       <Filter>Header Files\sdlutil</Filter>
     </ClInclude>
-    <ClInclude Include="src\sdlutils\Music.h">
-      <Filter>Header Files\sdlutil</Filter>
-    </ClInclude>
     <ClInclude Include="src\sdlutils\RandomNumberGenerator.h">
       <Filter>Header Files\sdlutil</Filter>
     </ClInclude>
     <ClInclude Include="src\sdlutils\SDLUtils.h">
-      <Filter>Header Files\sdlutil</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sdlutils\sdlutils_demo.h">
-      <Filter>Header Files\sdlutil</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sdlutils\SoundEffect.h">
       <Filter>Header Files\sdlutil</Filter>
     </ClInclude>
     <ClInclude Include="src\sdlutils\Texture.h">
@@ -147,18 +135,12 @@
     <ClInclude Include="src\systems\HeroSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\GameCtrlSystem.h">
-      <Filter>Header Files\systems</Filter>
-    </ClInclude>
     <ClInclude Include="src\systems\RenderSystem.h">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
-      <Filter>Source Files\json</Filter>
-    </ClCompile>
-    <ClCompile Include="src\json\json_demo.cpp">
       <Filter>Source Files\json</Filter>
     </ClCompile>
     <ClCompile Include="src\json\JSON.cpp">
@@ -170,16 +152,7 @@
     <ClCompile Include="src\utils\Vector2D.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\sdlutils\RandomNumberGenerator.cpp">
-      <Filter>Source Files\sdlutil</Filter>
-    </ClCompile>
     <ClCompile Include="src\sdlutils\SDLUtils.cpp">
-      <Filter>Source Files\sdlutil</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sdlutils\sdlutils_demo.cpp">
-      <Filter>Source Files\sdlutil</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sdlutils\SoundEffect.cpp">
       <Filter>Source Files\sdlutil</Filter>
     </ClCompile>
     <ClCompile Include="src\sdlutils\Texture.cpp">
@@ -187,9 +160,6 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\systems\GameCtrlSystem.cpp">
-      <Filter>Source Files\systems</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Game.cpp">
       <Filter>Source Files\game</Filter>

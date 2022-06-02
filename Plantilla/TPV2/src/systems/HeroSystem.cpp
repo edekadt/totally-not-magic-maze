@@ -1,41 +1,34 @@
 #include "HeroSystem.h"
-#include "../sdlutils/InputHandler.h"
 #include "MapSystem.h"
 
-void HeroSystem::initSystem() 
-{
-	//addFighterExits();
-}
+#include "../sdlutils/InputHandler.h"
+
+void HeroSystem::initSystem() {}
 
 void HeroSystem::update() 
 {
-	if (active_)
-	{
-		//Variable para detectar pulsacion de teclado
-		auto& ihldr = ih();
+		auto & ihldr = ih();
 
-		//Si hay una tecla pulsada...
-		if (ihldr.keyDownEvent())
+	if (ihldr.keyDownEvent())
+	{
+		if (ihldr.isKeyDown(SDL_SCANCODE_RIGHT))
 		{
-			if (ihldr.isKeyDown(SDL_SCANCODE_RIGHT))
-			{
-				move(1, 0);
-			}
-				
-			else if (ihldr.isKeyDown(SDL_SCANCODE_LEFT))
-			{
-				move(-1, 0);
-			}
-				
-			else if (ihldr.isKeyDown(SDL_SCANCODE_UP))
-			{
-				move(0, -1);
-			}
-				
-			else if (ihldr.isKeyDown(SDL_SCANCODE_DOWN))
-			{
-				move(0, 1);
-			}			
+			move(1, 0);
+		}
+
+		else if (ihldr.isKeyDown(SDL_SCANCODE_LEFT))
+		{
+			move(-1, 0);
+		}
+
+		else if (ihldr.isKeyDown(SDL_SCANCODE_UP))
+		{
+			move(0, -1);
+		}
+
+		else if (ihldr.isKeyDown(SDL_SCANCODE_DOWN))
+		{
+			move(0, 1);
 		}
 	}
 }
@@ -43,23 +36,6 @@ void HeroSystem::update()
 ecs::Entity* HeroSystem::getFighterExit(ecs::Entity* fighter)
 {
 	return exits[fighter];
-}
-
-void HeroSystem::receive(const Message& msg) 
-{
-	switch (msg.id)
-	{
-	case _m_ROUND_OVER: 
-		onRoundOver();
-		break;
-	case _m_ROUND_START: 
-		onRoundStart();
-		break;
-	case _m_BASE:
-		break; 
-	default:
-		break;
-	}
 }
 
 void HeroSystem::addFighter(int fighterID, int x, int y)
@@ -83,9 +59,6 @@ void HeroSystem::addFighter(int fighterID, int x, int y)
 		mngr_->setHandler(ecs::_hdlr_CAZA3, fighter);
 		break;
 	}
-
-	//addFighterExits(); 
-	
 }
 
 void HeroSystem::addFighterExits()
@@ -108,16 +81,6 @@ void HeroSystem::resetLevel()
 {
 	numFighters = 0; 
 	exits.clear(); 
-}
-
-void HeroSystem::onRoundOver()
-{
-	active_ = false; 
-}
-
-void HeroSystem::onRoundStart()
-{
-	active_ = true; 
 }
 
 void HeroSystem::move(int x, int y)

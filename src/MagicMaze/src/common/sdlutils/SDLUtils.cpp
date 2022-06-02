@@ -93,13 +93,6 @@ void SDLUtils::initSDLExtensions() {
 #ifdef _DEBUG
 	std::cout << "Initializing SEL_Mixer" << std::endl;
 #endif
-	// initialize SDL_Mixer
-	int mixOpenAudio = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	assert(mixOpenAudio == 0);
-	int mixInit_ret = Mix_Init(
-			MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG);
-	assert(mixInit_ret != 0);
-	SoundEffect::setNumberofChannels(8); // we start with 8 channels
 
 }
 
@@ -210,64 +203,15 @@ void SDLUtils::loadReasources(std::string filename) {
 		}
 	}
 
-	// load sounds
-	jValue = root["sounds"];
-	if (jValue != nullptr) {
-		if (jValue->IsArray()) {
-			for (auto &v : jValue->AsArray()) {
-				if (v->IsObject()) {
-					JSONObject vObj = v->AsObject();
-					std::string key = vObj["id"]->AsString();
-					std::string file = vObj["file"]->AsString();
-#ifdef _DEBUG
-					std::cout << "Loading sound effect with id: " << key
-							<< std::endl;
-#endif
-					sounds_.emplace(key, SoundEffect(file));
-				} else {
-					throw "'sounds' array in '" + filename
-							+ "' includes and invalid value";
-				}
-			}
-		} else {
-			throw "'sounds' is not an array";
-		}
-	}
-
-	// load musics
-	jValue = root["musics"];
-	if (jValue != nullptr) {
-		if (jValue->IsArray()) {
-			for (auto &v : jValue->AsArray()) {
-				if (v->IsObject()) {
-					JSONObject vObj = v->AsObject();
-					std::string key = vObj["id"]->AsString();
-					std::string file = vObj["file"]->AsString();
-#ifdef _DEBUG
-					std::cout << "Loading music with id: " << key << std::endl;
-#endif
-					musics_.emplace(key, Music(file));
-				} else {
-					throw "'musics' array in '" + filename
-							+ "' includes and invalid value";
-				}
-			}
-		} else {
-			throw "'musics' is not an array";
-		}
-	}
+	
 
 }
 
 void SDLUtils::closeSDLExtensions() {
-
-	musics_.clear();
-	sounds_.clear();
 	msgs_.clear();
 	images_.clear();
 	fonts_.clear();
 
-	Mix_Quit(); // quit SDL_mixer
 	IMG_Quit(); // quit SDL_image
 	TTF_Quit(); // quit SDL_ttf
 }

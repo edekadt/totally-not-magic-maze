@@ -1,15 +1,13 @@
 #include "RenderSystem.h"
 #include "MapSystem.h"
+
 #include <map>
 
 void RenderSystem::update()
 {	 
 	drawMap(); 
 	drawBase();
-	if (active_) {
-		drawFighter();
-	}
-	drawMSG();
+	drawFighter();
 }
 
 void RenderSystem::drawFighter()
@@ -101,57 +99,6 @@ void RenderSystem::drawMap()
 				t->render(dest, 0);
 			}
 		}
-	}
-}
-
-void RenderSystem::drawMSG()
-{
-	auto state = mngr_->getSystem<GameCtrlSystem>()->getState();
-
-	// message when game is not running
-	if (state != GameCtrlSystem::RUNNING) {
-
-		// game over message
-		if (state == GameCtrlSystem::GAMEOVER) {
-			auto win = mngr_->getSystem<GameCtrlSystem>()->getWinner();
-			if (win) {
-				auto& t = sdlutils().msgs().at("gameoverW");
-				t.render((sdlutils().width() - t.width()) / 2,
-					(sdlutils().height() - t.height()) / 2);
-			}
-			else {
-				auto& t = sdlutils().msgs().at("gameoverL");
-				t.render((sdlutils().width() - t.width()) / 2,
-					(sdlutils().height() - t.height()) / 2);
-			}
-		}
-
-		// new game message
-		if (state == GameCtrlSystem::NEWGAME) {
-			auto& t = sdlutils().msgs().at("start");
-			t.render((sdlutils().width() - t.width()) / 2,
-				sdlutils().height() / 2 + t.height() * 2);
-		}
-		else {
-			auto& t = sdlutils().msgs().at("continue");
-			t.render((sdlutils().width() - t.width()) / 2,
-				sdlutils().height() / 2 + t.height() * 2);
-		}
-	}
-}
-
-void RenderSystem::receive(const Message& msg)
-{
-	switch (msg.id)
-	{
-	case _m_ROUND_START:
-		active_ = true;
-		break;
-	case _m_ROUND_OVER:
-		active_ = false;
-		break;
-	default:
-		break;
 	}
 }
 
