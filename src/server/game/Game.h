@@ -38,7 +38,8 @@ public:
     uint8_t type;
 	union {
 		char direction; // Up, Down, Left, Right, None
-    	std::vector<std::vector<char>> map;
+        int positions [8]; // 2 coords for each of the 4 heroes or exits
+    	char map [144];
 	};
 };
 
@@ -49,9 +50,7 @@ public:
 	void init();
 	void start();
     
-    void sendMap(); 
-    void updExits(); 
-    void updPos(); 
+    void sendMessage(GameMessage& message); 
 
 private:
 	ecs::Manager *mngr_;

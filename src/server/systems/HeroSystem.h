@@ -42,13 +42,15 @@ public:
 
 	void move(int x, int y);
 	
+    Game* game; 
 private:
 
-    Game*game; 
 	// Asocia cada fighter con su salida
 	std::map<ecs::Entity*, ecs::Entity*> exits;
 
 	bool checkMove(Transform* tr, int x, int y);
+
+	void sendPositionUpdate();
 
 	Texture* t; 
 	int numFighters = 0;

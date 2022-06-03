@@ -43,11 +43,13 @@ public:
 	
 	GameMap::Grid* getGrid() { return grid; };
 
+	void SendMessages();
+
+	Game* game; 
 private:
 	GameMap::Grid* grid;
 
 	Transform* baseTr; 
-	Game* game; 
 
 	int aliveFighters = 0;
 	int exits = 0; 
@@ -65,6 +67,7 @@ private:
 
 	void clearMap(); 
 	
-	void mapMsg(std::string& msg); 
+	void mapMsg(); 
+	void exitsMsg();
 };
 

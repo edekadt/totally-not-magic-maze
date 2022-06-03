@@ -49,6 +49,7 @@ public:
 	virtual ~Game();
 	void init();
 	void start();
+    void sendMessage(GameMessage& message); 
 private:
 	ecs::Manager *mngr_;
 
@@ -58,9 +59,11 @@ private:
 	
     Socket* server;
 
-    Socket* socket;
+    Socket socket;
 	void net_thread();
     void joinGame();
     void leaveGame();
+
+    bool connectionEstablished = false;
 };
 

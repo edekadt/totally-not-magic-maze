@@ -175,33 +175,7 @@ void MapSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
 
 	mngr_->getSystem<HeroSystem>()->addFighterExits();
 
-	game->sendMap(); 
-	game->updExits(); 
-}
-
-void MapSystem::mapMsg(std::string& msg)
-{
-	msg = std::string(144, '-');
-    int aux = 0;  
-    for (int j = 0; j < 12; j++)
-    {
-        for (int i = 0; i < 12; i++)
-        {
-            if ((*grid)[i][j] == GameMap::Cells::Exit)
-            {
-                msg[aux] = 'X'; 
-            }
-            else if ((*grid)[i][j] == GameMap::Cells::Wall)
-            {
-                msg[aux] = 'W';
-            }
-            else
-            {
-                msg[aux] = '-';
-            }
-            aux++; 
-        }
-    }
+	mapMsg();
 }
 
 void MapSystem::createPath(int id, std::vector<std::vector<bool>>& occupied)
@@ -307,3 +281,82 @@ void MapSystem::clearMap()
 	}
 }
 
+void MapSystem::SendMessages()
+{
+	exitsMsg();
+	mapMsg();
+}
+
+void MapSystem::mapMsg()
+{
+	GameMessage msg = GameMessage();
+    int aux = 0;  
+    for (int j = 0; j < 12; j++)
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            if ((*grid)[i][j] == GameMap::Cells::Exit)
+            {
+                msg.map[aux] = 'X'; 
+            }
+            else if ((*grid)[i][j] == GameMap::Cells::Wall)
+            {
+                msg.map[aux] = 'W';
+            }
+            else
+            {
+                msg.map[aux] = '-';
+            }
+            aux++; 
+        }
+    }
+	msg.type = GameMessage::NEWMAP;
+	game->sendMessage(msg);
+}
+
+
+void MapSystem::exitsMsg()
+{
+	
+	GameMessage msg = GameMessage();
+	for (int i = 0; i< 8; i+=2)
+	{
+		ecs::Entity* hdlr = NULL;
+		switch(i)
+		{
+		case 0:
+			hdlr = mngr_->getHandler(ecs::_hdlr_EXIT0);
+			break;
+		case 1:
+			hdlr = mngr_->getHandler(ecs::_hdlr_EXIT1);
+			break;
+		case 2:
+			hdlr = mngr_->getHandler(ecs::_hdlr_EXIT2);
+			break;
+		case 3:
+			hdlr = mngr_->getHandler(ecs::_hdlr_EXIT3);
+			break;
+		}
+		if (hdlr != NULL)
+		{
+			Transform* tr = mngr_->getComponent<Transform>(hdlr);
+			if (tr->pos_.getX() != -1 && tr->pos_.getY() != -1)
+			{
+				msg.positions[i] = tr->pos_.getX();
+				msg.positions[i+1] = tr->pos_.getY();
+			}
+			else
+			{
+				msg.positions[i] = -1;
+				msg.positions[i+1] = -1;
+			}
+		}
+		else
+		{
+			msg.positions[i] = -1;
+			msg.positions[i+1] = -1;
+		}
+	}
+	msg.type = GameMessage::UPDATEEXITS;
+	game->sendMessage(msg);
+}

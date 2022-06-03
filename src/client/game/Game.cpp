@@ -70,13 +70,15 @@ Game::Game(const char * s, const char * p) :
 		mngr_(nullptr), //
 	    heroSys_(nullptr), //
 		mapSys_(nullptr), //
-		renderSys_(nullptr) { socket = new Socket(s, p); heroSys_->setSocket(socket);}
+		renderSys_(nullptr),
+		socket(s, p) {std::cout<<"Client constructor\n";}
 
 Game::~Game() {
 	delete mngr_;
 }
 
 void Game::init() {
+	std::cout << "init\n";
 
 	// Initialize the SDLUtils singleton
 	SDLUtils::init("Magic Maze", 600, 600,
@@ -91,23 +93,40 @@ void Game::init() {
 	heroSys_ = mngr_->addSystem<HeroSystem>();
 	renderSys_ = mngr_->addSystem<RenderSystem>();
 	
-	joinGame();
 }
 
 void Game::start() {
 	std::cout<<"Start\n";
-	mngr_->getSystem<MapSystem>()->initSystem();
-	mngr_->getSystem<HeroSystem>()->initSystem();
-	mngr_->getSystem<RenderSystem>()->initSystem();
+	heroSys_->game = this;
 
 	// a boolean to exit the loop
 	bool exit = false;
 
 	auto &ihdlr = ih();
+	std::cout<<"Waiting for connection\n";
+
+	std::thread waitForConnetion(&Game::net_thread, this);
+	joinGame();
+	
+	waitForConnetion.join();
+	connectionEstablished = true;
+	std::cout<<"Connection established\n";
+
+	mngr_->getSystem<MapSystem>()->initSystem();
+	std::cout<<"Map inited\n";
+	mngr_->getSystem<HeroSystem>()->initSystem();
+	std::cout<<"Heroes inited\n";
+	mngr_->getSystem<RenderSystem>()->initSystem();
+	std::cout<<"Render inited\n";
+
 
 	std::thread message_thread(&Game::net_thread, this);
+
 	while (!exit) {
 		Uint32 startTime = sdlutils().currRealTime();
+
+
+		std::cout<<"Loop\n";
 
 		// refresh the input handler
 		ihdlr.refresh();
@@ -121,7 +140,6 @@ void Game::start() {
 
 		heroSys_->update();
 		mapSys_->update();	
-
 		sdlutils().clearRenderer();
 		renderSys_->update();
 		sdlutils().presentRenderer();
@@ -131,6 +149,7 @@ void Game::start() {
 		if (frameTime < 10)
 			SDL_Delay(10 - frameTime);
 	}
+	leaveGame();
 }
 
 void Game::net_thread()
@@ -139,7 +158,7 @@ void Game::net_thread()
     {	
 		server = 0;
         GameMessage msg;
-        int isMessage = socket->recv(msg, server);
+        int isMessage = socket.recv(msg, server);
 
         if (isMessage != -1)
         {
@@ -151,6 +170,11 @@ void Game::net_thread()
                 	break;	// server should never receive a new map or position update message
 				case GameMessage::NEWMAP:
 					mapSys_->newMap(msg.map);
+					if (!connectionEstablished)
+					{
+						connectionEstablished = true;
+						return;
+					}
 					break;
 				case GameMessage::UPDATEEXITS:
 					mapSys_->updateExits(msg.positions);
@@ -170,7 +194,7 @@ void Game::joinGame()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::CLIENTJOINED;
 
-    socket->send(em, *socket);
+    sendMessage(em);
 }
 
 void Game::leaveGame()
@@ -180,5 +204,12 @@ void Game::leaveGame()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::CLIENTLEFT;
 
-    socket->send(em, *socket);
+    sendMessage(em);
+}
+
+void Game::sendMessage(GameMessage& message)
+{
+	std::cout<<"Sending message\n";
+
+    socket.send(message, socket);
 }

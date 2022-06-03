@@ -5,6 +5,7 @@
 
 #include "../sdlutils/InputHandler.h"
 
+
 void HeroSystem::initSystem() {}
 
 void HeroSystem::update() 
@@ -20,12 +21,12 @@ void HeroSystem::update()
 
 		else if (ihldr.isKeyDown(SDL_SCANCODE_LEFT))
 		{
-			move(-1, 0);
+			//move(-1, 0);
 		}
 
 		else if (ihldr.isKeyDown(SDL_SCANCODE_UP))
 		{
-			move(0, -1);
+			//move(0, -1);
 		}
 
 		else if (ihldr.isKeyDown(SDL_SCANCODE_DOWN))
@@ -96,9 +97,8 @@ void HeroSystem::move(int x, int y)
 			playerTr->pos_.setY(playerTr->pos_.getY() + y);
 		}
 	}
-
-	game->updPos(); 
 	movimientos++;
+	sendPositionUpdate();
 }
 
 bool HeroSystem::checkMove(Transform* tr, int x, int y)
@@ -118,4 +118,49 @@ bool HeroSystem::checkMove(Transform* tr, int x, int y)
 			return false;
 	}
 	return true;
+}
+
+void HeroSystem::sendPositionUpdate()
+{
+	GameMessage msg = GameMessage();
+	for (int i = 0; i< 8; i+=2)
+	{
+		ecs::Entity* hdlr = NULL;
+		switch(i)
+		{
+		case 0:
+			hdlr = mngr_->getHandler(ecs::_hdlr_CAZA0);
+			break;
+		case 1:
+			hdlr = mngr_->getHandler(ecs::_hdlr_CAZA1);
+			break;
+		case 2:
+			hdlr = mngr_->getHandler(ecs::_hdlr_CAZA2);
+			break;
+		case 3:
+			hdlr = mngr_->getHandler(ecs::_hdlr_CAZA3);
+			break;
+		}
+		if (hdlr != NULL)
+		{
+			Transform* tr = mngr_->getComponent<Transform>(hdlr);
+			if (tr->pos_.getX() != -1 && tr->pos_.getY() != -1)
+			{
+				msg.positions[i] = tr->pos_.getX();
+				msg.positions[i+1] = tr->pos_.getY();
+			}
+			else
+			{
+				msg.positions[i] = -1;
+				msg.positions[i+1] = -1;
+			}
+		}
+		else
+		{
+			msg.positions[i] = -1;
+			msg.positions[i+1] = -1;
+		}
+	}
+	msg.type = GameMessage::UPDATEPOS;
+	game->sendMessage(msg);
 }

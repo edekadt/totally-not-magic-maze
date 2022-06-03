@@ -74,16 +74,11 @@ void HeroSystem::move(char dir)
 		GameMessage em = GameMessage();
 		em.type = GameMessage::MessageType::MOVEMENT;
 		em.direction = dir;
-		socket->send(em, *socket);
+		game->sendMessage(em);
 	}
 		break;
 	case 'D':
 	case 'R':
 		break;
 	}
-}
-
-void HeroSystem::setSocket(Socket* soc)
-{
-	socket = soc;
 }

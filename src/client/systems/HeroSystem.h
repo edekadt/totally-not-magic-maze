@@ -19,6 +19,7 @@
 #include "../network/Socket.h"
 
 class Socket;
+class Game;
 
 class HeroSystem : public ecs::System {
 public:
@@ -36,11 +37,10 @@ public:
 
 	void move(char dir);
 
-	void setSocket(Socket* soc);
+	Game* game;
 	
 private:
 
-	Socket* socket;
 	int numFighters = 0;
 };
 

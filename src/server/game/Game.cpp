@@ -71,13 +71,14 @@ Game::Game(const char * s, const char * p) :
 	    heroSys_(nullptr), //
 		mapSys_(nullptr), //
 		renderSys_(nullptr),
-		socket(s, p) { }
+		socket(s, p) {std::cout<<"Server constructor\n"; }
 
 Game::~Game() {
 	delete mngr_;
 }
 
 void Game::init() {
+	std::cout<<"Server init\n";
 
 	// Initialize the SDLUtils singleton
 	SDLUtils::init("Magic Maze", 600, 600,
@@ -93,6 +94,8 @@ void Game::init() {
 	renderSys_ = mngr_->addSystem<RenderSystem>();
 	
 	socket.bind();
+	heroSys_->game = this;
+	mapSys_->game = this;
 }
 
 void Game::start() {
@@ -138,26 +141,27 @@ void Game::do_messages()
 {
 	while (true)
     {	
-		Socket* client_ = 0;
         GameMessage msg;
-        int isMessage = socket.recv(msg, client_);
+        int isMessage = socket.recv(msg, client);
 
         if (isMessage != -1)
         {
             switch(msg.type)
             {
                 case GameMessage::CLIENTJOINED:
-                    client = client_;
+				{
+					mapSys_->SendMessages();
                     std::cout << "Client connected." << std::endl;
-                break;
+                	break;
+				}
                 case GameMessage::CLIENTLEFT:
                 {
 					std::cout << "Client disconnected." << std::endl;
 					             
 					delete client;
 					client = NULL;       
+                	break;	
                 }
-                break;
                 case GameMessage::MOVEMENT:
 					switch (msg.direction)
 					{
@@ -187,33 +191,11 @@ void Game::do_messages()
     }
 }
 
-void Game::sendMap()
+void Game::sendMessage(GameMessage& message)
 {
-	std::cout<<"Create map\n";
+	std::cout<<"Sending message\n";
 
-    GameMessage em = GameMessage();
-    em.type = GameMessage::MessageType::NEWMAP;
-
-    socket.send(em, socket);
+    socket.send(message, *client);
 }
 
-void Game::updExits()
-{
-	std::cout<<"Create exits\n";
-
-    GameMessage em = GameMessage();
-    em.type = GameMessage::MessageType::UPDATEEXITS;
-
-    socket.send(em, socket);
-}
-
-void Game::updPos()
-{
-	std::cout<<"Update positions\n";
-
-    GameMessage em = GameMessage();
-    em.type = GameMessage::MessageType::UPDATEPOS;
-
-    socket.send(em, socket);
-}
 
