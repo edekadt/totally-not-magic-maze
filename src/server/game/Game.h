@@ -48,6 +48,11 @@ public:
 	virtual ~Game();
 	void init();
 	void start();
+    
+    void sendMap(); 
+    void updExits(); 
+    void updPos(); 
+
 private:
 	ecs::Manager *mngr_;
 
@@ -59,10 +64,5 @@ private:
 
     Socket socket;
 	void do_messages();
-
-    void sendMap(); 
-    void updExits(); 
-    void updPos(); 
-
 };
 

@@ -9,8 +9,6 @@
 #include "../ecs/Manager.h"
 #include "../ecs/Entity.h"
 
-#include "../game/Game.h"
-
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
 
@@ -26,6 +24,7 @@ namespace GameMap
 }
 
 struct Transform;
+class Game;
 
 class MapSystem: public ecs::System {
 
@@ -66,6 +65,6 @@ private:
 
 	void clearMap(); 
 	
-	char[144] mapMsg(); 
+	void mapMsg(std::string& msg); 
 };
 

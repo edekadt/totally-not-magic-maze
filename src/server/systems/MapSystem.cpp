@@ -2,6 +2,8 @@
 #include "RenderSystem.h"
 #include "HeroSystem.h"
 
+#include "../game/Game.h"
+
 #include <random>
 
 MapSystem::MapSystem() {
@@ -177,7 +179,30 @@ void MapSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
 	game->updExits(); 
 }
 
-char[144] M_1_PI
+void MapSystem::mapMsg(std::string& msg)
+{
+	msg = std::string(144, '-');
+    int aux = 0;  
+    for (int j = 0; j < 12; j++)
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            if ((*grid)[i][j] == GameMap::Cells::Exit)
+            {
+                msg[aux] = 'X'; 
+            }
+            else if ((*grid)[i][j] == GameMap::Cells::Wall)
+            {
+                msg[aux] = 'W';
+            }
+            else
+            {
+                msg[aux] = '-';
+            }
+            aux++; 
+        }
+    }
+}
 
 void MapSystem::createPath(int id, std::vector<std::vector<bool>>& occupied)
 {

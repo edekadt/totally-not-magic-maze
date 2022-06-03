@@ -1,6 +1,8 @@
 #include "HeroSystem.h"
 #include "MapSystem.h"
 
+#include "../game/Game.h"
+
 #include "../sdlutils/InputHandler.h"
 
 void HeroSystem::initSystem() {}

@@ -8,7 +8,6 @@
 #include "../ecs/Entity.h"
 #include "../ecs/Manager.h"
 
-#include "../game/Game.h"
 
 #include "../utils/Collisions.h"
 #include "../utils/Vector2D.h"
@@ -17,6 +16,8 @@
 #include "../sdlutils/Texture.h"
 
 #include "../components/Transform.h"
+
+class Game;
 
 class HeroSystem : public ecs::System {
 public:

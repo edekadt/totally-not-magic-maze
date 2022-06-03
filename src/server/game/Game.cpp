@@ -194,7 +194,7 @@ void Game::sendMap()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::NEWMAP;
 
-    socket->send(em, *socket);
+    socket.send(em, socket);
 }
 
 void Game::updExits()
@@ -204,7 +204,7 @@ void Game::updExits()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::UPDATEEXITS;
 
-    socket->send(em, *socket);
+    socket.send(em, socket);
 }
 
 void Game::updPos()
@@ -214,6 +214,6 @@ void Game::updPos()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::UPDATEPOS;
 
-    socket->send(em, *socket);
+    socket.send(em, socket);
 }
 
