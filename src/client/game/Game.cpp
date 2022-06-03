@@ -70,8 +70,7 @@ Game::Game(const char * s, const char * p) :
 		mngr_(nullptr), //
 	    heroSys_(nullptr), //
 		mapSys_(nullptr), //
-		renderSys_(nullptr),
-		socket(s, p) { }
+		renderSys_(nullptr) { socket = new Socket(s, p); heroSys_->setSocket(socket);}
 
 Game::~Game() {
 	delete mngr_;
@@ -140,7 +139,7 @@ void Game::net_thread()
     {	
 		server = 0;
         GameMessage msg;
-        int isMessage = socket.recv(msg, server);
+        int isMessage = socket->recv(msg, server);
 
         if (isMessage != -1)
         {
@@ -151,8 +150,13 @@ void Game::net_thread()
                 case GameMessage::MOVEMENT:
                 	break;	// server should never receive a new map or position update message
 				case GameMessage::NEWMAP:
+					mapSys_->newMap(msg.map);
+					break;
+				case GameMessage::UPDATEEXITS:
+					mapSys_->updateExits(msg.positions);
 					break;
 				case GameMessage::UPDATEPOS:
+					heroSys_->updatePositions(msg.positions);
 					break; 	
             }
         }   
@@ -166,7 +170,7 @@ void Game::joinGame()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::CLIENTJOINED;
 
-    socket.send(em, socket);
+    socket->send(em, *socket);
 }
 
 void Game::leaveGame()
@@ -176,5 +180,5 @@ void Game::leaveGame()
     GameMessage em = GameMessage();
     em.type = GameMessage::MessageType::CLIENTLEFT;
 
-    socket.send(em, socket);
+    socket->send(em, *socket);
 }

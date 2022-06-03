@@ -27,7 +27,6 @@ struct Transform;
 
 class MapSystem: public ecs::System {
 
-	void initializeMap(int mapX, int mapY);
 
 public:
 
@@ -38,29 +37,21 @@ public:
 
 	void initSystem(); 
 
+	void newMap(char maptext [144]);
+
 	void update() override;
 	
 	GameMap::Grid* getGrid() { return grid; };
 
+	void updateExits(int positions [8]);
+
 private:
 	GameMap::Grid* grid;
 
-	Transform* baseTr; 
-
-	int aliveFighters = 0;
-	int exits = 0; 
-
-	void addExit(int exitID, int x, int y);
+	void addExit(int exitID);
 	void addBlock(int x, int y);
 
-	void load(int mapX, int mapY);
-	void generateLevel(int numHeroes, int mapX_ = 12, int mapY_ = 12);
-	void createPath(int id, std::vector<std::vector<bool>>& occupied);
-	Vector2D chooseNextDirection(int x, int y, const Vector2D& lastDirection, const std::vector<std::vector<bool>>& occupied);
-	int randomBetween(int low, int high);
-	bool validPos(int x, int y);
-	int mapX, mapY;
-
 	void clearMap(); 
+	void initializeMap();
 };
 

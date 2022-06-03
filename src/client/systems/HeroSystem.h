@@ -16,6 +16,10 @@
 
 #include "../components/Transform.h"
 
+#include "../network/Socket.h"
+
+class Socket;
+
 class HeroSystem : public ecs::System {
 public:
 
@@ -28,10 +32,15 @@ public:
 
 	void update() override;
 
+	void updatePositions(int positions [8]);
+
 	void move(char dir);
+
+	void setSocket(Socket* soc);
 	
 private:
 
+	Socket* socket;
 	int numFighters = 0;
 };
 

@@ -17,6 +17,7 @@ void RenderSystem::drawFighter()
 	{
 		if (mngr_->isAlive(e)) {
 			auto cazaTr = mngr_->getComponent<Transform>(e);
+			if (cazaTr->pos_.getX() == -1 || cazaTr->pos_.getY() == -1) continue;
 			assert(cazaTr != nullptr);
 
 			SDL_Rect dest = build_sdlrect(cazaTr->pos_.getX() * 50, cazaTr->pos_.getY() * 50.0, cazaTr->width_, cazaTr->height_);
@@ -51,6 +52,7 @@ void RenderSystem::drawBase()
 	{
 		auto baseTr = mngr_->getComponent<Transform>(e);
 		assert(baseTr != nullptr);
+		if (baseTr->pos_.getX() == -1 || baseTr->pos_.getY() == -1) continue;
 
 		SDL_Rect dest = build_sdlrect(baseTr->pos_.getX() * 50.0, baseTr->pos_.getY() * 50.0, baseTr->width_, baseTr->height_);
 

@@ -22,7 +22,8 @@ public:
         MOVEMENT 		= 1,
 		UPDATEPOS		= 2,
         NEWMAP	 		= 3,
-        CLIENTLEFT 		= 4
+        UPDATEEXITS     = 4,
+        CLIENTLEFT 		= 5
     };
 
     GameMessage(){};

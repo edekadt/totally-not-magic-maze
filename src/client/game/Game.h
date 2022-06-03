@@ -38,7 +38,8 @@ public:
     uint8_t type;
 	union {
 		char direction; // Up, Down, Left, Right, None
-    	std::vector<std::vector<char>> map;
+        int positions [8]; // 2 coords for each of the 4 heroes or exits
+    	char map [144];
 	};
 };
 
@@ -57,7 +58,7 @@ private:
 	
     Socket* server;
 
-    Socket socket;
+    Socket* socket;
 	void net_thread();
     void joinGame();
     void leaveGame();
