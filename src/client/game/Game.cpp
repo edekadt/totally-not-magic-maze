@@ -32,10 +32,6 @@ void GameMessage::to_bin()
 	case 1: // MOVEMENT
 	    memcpy(tmp, &direction, sizeof(char));
 		break;
-
-	case 2:	// NEW MAP	
-    	memcpy(tmp, &map, sizeof(char) * 144);
-		break;
 	}
 }
 
@@ -52,12 +48,14 @@ int GameMessage::from_bin(char * bobj)
     tmp += sizeof(uint8_t);
 	switch(type)
 	{
-	case 1: // MOVEMENT
-	    memcpy(&direction, tmp, sizeof(char) * 8);
+	case 2:	// UPDATE POS
+    	memcpy(&positions[0], tmp, sizeof(char) * 144);
 		break;
-
-	case 2:	// NEW MAP
+	case 3:	// NEW MAP
     	memcpy(&map[0], tmp, sizeof(char) * 144);
+		break;
+	case 4:	// exits
+    	memcpy(&positions[0], tmp, sizeof(char) * 144);
 		break;
 	}
     tmp += sizeof(char) * 8;
@@ -172,6 +170,7 @@ void Game::net_thread()
 					mapSys_->newMap(msg.map);
 					if (!connectionEstablished)
 					{
+						throw new std::exception();
 						connectionEstablished = true;
 						return;
 					}

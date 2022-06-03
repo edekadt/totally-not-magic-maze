@@ -29,12 +29,15 @@ void GameMessage::to_bin()
     tmp += sizeof(uint8_t);
 	switch(type)
 	{
-	case 1: // MOVEMENT
-	    memcpy(tmp, &direction, sizeof(char));
+	case 2: // UPDATE POS
+	    memcpy(tmp, &positions, sizeof(char));
 		break;
 
-	case 2:	// NEW MAP	
+	case 3:	// NEW MAP	
     	memcpy(tmp, &map, sizeof(char) * 144);
+		break;
+	case 4: // UPDATE EXITS
+	    memcpy(tmp, &positions, sizeof(char));
 		break;
 	}
 }
@@ -54,10 +57,6 @@ int GameMessage::from_bin(char * bobj)
 	{
 	case 1: // MOVEMENT
 	    memcpy(&direction, tmp, sizeof(char) * 8);
-		break;
-
-	case 2:	// NEW MAP
-    	memcpy(&map[0], tmp, sizeof(char) * 144);
 		break;
 	}
     tmp += sizeof(char) * 8;
@@ -141,6 +140,7 @@ void Game::do_messages()
 {
 	while (true)
     {	
+		client = 0;
         GameMessage msg;
         int isMessage = socket.recv(msg, client);
 
@@ -150,8 +150,8 @@ void Game::do_messages()
             {
                 case GameMessage::CLIENTJOINED:
 				{
-					mapSys_->SendMessages();
                     std::cout << "Client connected." << std::endl;
+					mapSys_->SendMessages();
                 	break;
 				}
                 case GameMessage::CLIENTLEFT:
