@@ -95,6 +95,7 @@ void HeroSystem::move(int x, int y)
 		}
 	}
 
+	game->updPos(); 
 	movimientos++;
 }
 

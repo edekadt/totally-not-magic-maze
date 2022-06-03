@@ -172,7 +172,12 @@ void MapSystem::generateLevel(int numHeroes, int mapX_, int mapY_)
 	}
 
 	mngr_->getSystem<HeroSystem>()->addFighterExits();
+
+	game->sendMap(); 
+	game->updExits(); 
 }
+
+char[144] M_1_PI
 
 void MapSystem::createPath(int id, std::vector<std::vector<bool>>& occupied)
 {
@@ -266,11 +271,6 @@ bool MapSystem::validPos(int x, int y)
 
 void MapSystem::clearMap()
 {
-	for (auto bloque : mngr_->getEntities(ecs::_grp_BLOCKS))
-	{
-		mngr_->setAlive(bloque, false); 
-	}
-		 
 	for (auto fighter : mngr_->getEntities(ecs::_grp_FIGHTERS))
 	{
 		mngr_->setAlive(fighter, false); 

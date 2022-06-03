@@ -8,6 +8,8 @@
 #include "../ecs/Entity.h"
 #include "../ecs/Manager.h"
 
+#include "../game/Game.h"
+
 #include "../utils/Collisions.h"
 #include "../utils/Vector2D.h"
 
@@ -40,6 +42,8 @@ public:
 	void move(int x, int y);
 	
 private:
+
+    Game*game; 
 	// Asocia cada fighter con su salida
 	std::map<ecs::Entity*, ecs::Entity*> exits;
 

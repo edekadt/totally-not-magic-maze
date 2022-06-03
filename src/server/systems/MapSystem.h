@@ -9,6 +9,8 @@
 #include "../ecs/Manager.h"
 #include "../ecs/Entity.h"
 
+#include "../game/Game.h"
+
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
 
@@ -46,6 +48,7 @@ private:
 	GameMap::Grid* grid;
 
 	Transform* baseTr; 
+	Game* game; 
 
 	int aliveFighters = 0;
 	int exits = 0; 
@@ -62,5 +65,7 @@ private:
 	int mapX, mapY;
 
 	void clearMap(); 
+	
+	char[144] mapMsg(); 
 };
 

@@ -60,5 +60,9 @@ private:
     Socket socket;
 	void do_messages();
 
+    void sendMap(); 
+    void updExits(); 
+    void updPos(); 
+
 };
 

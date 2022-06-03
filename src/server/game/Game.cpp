@@ -179,9 +179,41 @@ void Game::do_messages()
                     std::cout << "Movement received\n";
                 break;
 				case GameMessage::NEWMAP:
+				case GameMessage::UPDATEEXITS:
 				case GameMessage::UPDATEPOS:
 					break; 	// server should never receive a new map or position update message
             }
         }   
     }
 }
+
+void Game::sendMap()
+{
+	std::cout<<"Create map\n";
+
+    GameMessage em = GameMessage();
+    em.type = GameMessage::MessageType::NEWMAP;
+
+    socket->send(em, *socket);
+}
+
+void Game::updExits()
+{
+	std::cout<<"Create exits\n";
+
+    GameMessage em = GameMessage();
+    em.type = GameMessage::MessageType::UPDATEEXITS;
+
+    socket->send(em, *socket);
+}
+
+void Game::updPos()
+{
+	std::cout<<"Update positions\n";
+
+    GameMessage em = GameMessage();
+    em.type = GameMessage::MessageType::UPDATEPOS;
+
+    socket->send(em, *socket);
+}
+
