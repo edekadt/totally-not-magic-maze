@@ -19,7 +19,7 @@ Socket::Socket(const char * address, const char * port):sd(-1)
 
     if (rc != 0)
     {
-        std::cout << "Error getaddrinfo" << gai_strerror(rc) << std::endl;
+        std::cout << "Error getaddrinfo: " << gai_strerror(rc) << std::endl;
         exit(-1);
     }
 

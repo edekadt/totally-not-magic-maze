@@ -36,12 +36,12 @@ public:
 	void addFighterExits();
 
 	void resetLevel();
+
+	void move(int x, int y);
 	
 private:
 	// Asocia cada fighter con su salida
 	std::map<ecs::Entity*, ecs::Entity*> exits;
-
-	void move(int x, int y);
 
 	bool checkMove(Transform* tr, int x, int y);
 

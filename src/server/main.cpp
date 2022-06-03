@@ -4,10 +4,10 @@
 
 #include "game/Game.h"
 
-int main(int, char**) {
+int main(int argc, char **argv) {
 
 	try {
-		Game g;
+		Game g = Game(argv[1], argv[2]);
 		g.init();
 		g.start();
 	} catch (const std::string &e) { // catch exceptions thrown as strings
