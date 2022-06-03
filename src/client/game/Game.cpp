@@ -92,7 +92,7 @@ void Game::init() {
 	heroSys_ = mngr_->addSystem<HeroSystem>();
 	renderSys_ = mngr_->addSystem<RenderSystem>();
 	
-	socket.bind();
+	joinGame();
 }
 
 void Game::start() {
@@ -106,7 +106,7 @@ void Game::start() {
 
 	auto &ihdlr = ih();
 
-	std::thread message_thread(&Game::do_messages, this);
+	std::thread message_thread(&Game::net_thread, this);
 	while (!exit) {
 		Uint32 startTime = sdlutils().currRealTime();
 
@@ -134,54 +134,47 @@ void Game::start() {
 	}
 }
 
-void Game::do_messages()
+void Game::net_thread()
 {
 	while (true)
     {	
-		Socket* client_ = 0;
+		server = 0;
         GameMessage msg;
-        int isMessage = socket.recv(msg, client_);
+        int isMessage = socket.recv(msg, server);
 
         if (isMessage != -1)
         {
             switch(msg.type)
             {
                 case GameMessage::CLIENTJOINED:
-                    client = client_;
-                    std::cout << "Client connected." << std::endl;
-                break;
                 case GameMessage::CLIENTLEFT:
-                {
-					std::cout << "Client disconnected." << std::endl;
-					             
-					delete client;
-					client = NULL;       
-                }
-                break;
                 case GameMessage::MOVEMENT:
-					switch (msg.direction)
-					{
-					case 'U':
-						heroSys_->move(0, -1);
-						break;
-					case 'D':
-						heroSys_->move(0, 1);
-						break;
-					case 'L':
-						heroSys_->move(-1, 0);
-						break;
-					case 'R':
-						heroSys_->move(1, 0);
-						break;
-					case 'N':
-						break;
-					}
-                    std::cout << "Movement received\n";
-                break;
+                	break;	// server should never receive a new map or position update message
 				case GameMessage::NEWMAP:
+					break;
 				case GameMessage::UPDATEPOS:
-					break; 	// server should never receive a new map or position update message
+					break; 	
             }
         }   
     }
+}
+
+void Game::joinGame()
+{
+    std::cout<<"Joining game\n";
+
+    GameMessage em = GameMessage();
+    em.type = GameMessage::MessageType::CLIENTJOINED;
+
+    socket.send(em, socket);
+}
+
+void Game::leaveGame()
+{
+	std::cout<<"Leaving game\n";
+
+    GameMessage em = GameMessage();
+    em.type = GameMessage::MessageType::CLIENTLEFT;
+
+    socket.send(em, socket);
 }

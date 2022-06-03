@@ -22,7 +22,8 @@ public:
         MOVEMENT 		= 1,
 		UPDATEPOS		= 2,
         NEWMAP	 		= 3,
-        CLIENTLEFT 		= 4
+        UPDATEEXITS     = 4,
+        CLIENTLEFT 		= 5
     };
 
     GameMessage(){};
@@ -54,10 +55,11 @@ private:
 	RenderSystem *renderSys_;
 	HeroSystem* heroSys_;
 	
-    Socket* client;
+    Socket* server;
 
     Socket socket;
-	void do_messages();
-
+	void net_thread();
+    void joinGame();
+    void leaveGame();
 };
 

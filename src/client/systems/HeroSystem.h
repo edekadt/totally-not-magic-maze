@@ -28,25 +28,10 @@ public:
 
 	void update() override;
 
-	int getMov() { return movimientos; }
-
-	ecs::Entity* getFighterExit(ecs::Entity* fighter);
-
-	void addFighter(int fighterID, int x, int y);
-	void addFighterExits();
-
-	void resetLevel();
-
-	void move(int x, int y);
+	void move(char dir);
 	
 private:
-	// Asocia cada fighter con su salida
-	std::map<ecs::Entity*, ecs::Entity*> exits;
 
-	bool checkMove(Transform* tr, int x, int y);
-
-	Texture* t; 
 	int numFighters = 0;
-	int movimientos = 0; 
 };
 
